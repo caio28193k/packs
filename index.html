@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F26522">
 <meta name="description" content="147 folhas de atividade para Pré I e Pré II, em preto e branco, com o código da BNCC em cada folha e guia do professor. PDF pronto para imprimir, por R$ 9,90.">
-<link rel="canonical" href="https://SEU-DOMINIO.com.br/">
+<link rel="canonical" href="https://packatividades.vercel.app/">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Pack Educação Infantil Completa | 147 atividades para Pré I e Pré II">
 <meta property="og:description" content="147 folhas de atividade para Pré I e Pré II, em preto e branco, com o código da BNCC em cada folha e guia do professor. PDF pronto para imprimir, por R$ 9,90.">
-<meta property="og:image" content="https://SEU-DOMINIO.com.br/img/01-letra-A.png">
-<meta property="og:url" content="https://SEU-DOMINIO.com.br/">
+<meta property="og:image" content="https://packatividades.vercel.app/img/capa.webp">
+<meta property="og:url" content="https://packatividades.vercel.app/">
 <meta name="twitter:card" content="summary_large_image">
 
 <style>
@@ -25,6 +25,29 @@ img{max-width:100%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;700;800&display=swap">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1040972462045050');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', {
+  content_name: 'Pack Educacao Infantil Completa',
+  content_type: 'product',
+  value: 9.90,
+  currency: 'BRL'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1040972462045050&ev=PageView&noscript=1"></noscript>
+<!-- fim do Meta Pixel -->
 </head>
 <body>
 <!--
@@ -1130,6 +1153,57 @@ mark{
   window.addEventListener('scroll', agendar, { passive: true });
   window.addEventListener('resize', agendar, { passive: true });
 })();
+</script>
+
+<div id="aviso-lgpd" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:70;
+            background:#12336B;color:#fff;padding:12px 16px;
+            padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));
+            font:600 13px/1.45 Nunito,system-ui,sans-serif;
+            display:flex;gap:12px;align-items:center;justify-content:center;
+            flex-wrap:wrap;text-align:center">
+  <span>Usamos cookies para medir a origem das visitas e melhorar os anúncios.</span>
+  <button type="button" id="aceitar-lgpd"
+          style="background:#FFC72C;color:#12336B;border:0;border-radius:999px;
+                 padding:9px 20px;font:800 13px Nunito,system-ui,sans-serif;
+                 cursor:pointer">Entendi</button>
+</div>
+
+<script>
+(function () {{
+  // aviso de cookies, uma vez por navegador
+  var aviso = document.getElementById('aviso-lgpd');
+  var botao = document.getElementById('aceitar-lgpd');
+  var chave = 'aviso-lgpd-visto';
+  var visto = false;
+  try {{ visto = localStorage.getItem(chave) === '1'; }} catch (e) {{}}
+  if (!visto && aviso) {{
+    aviso.hidden = false;
+    botao.addEventListener('click', function () {{
+      aviso.hidden = true;
+      try {{ localStorage.setItem(chave, '1'); }} catch (e) {{}}
+    }});
+  }}
+
+  // clique nas chamadas
+  if (typeof fbq !== 'function') {{ return; }}
+  document.addEventListener('click', function (e) {{
+    var alvo = e.target.closest ? e.target.closest('a.btn') : null;
+    if (!alvo) {{ return; }}
+    var destino = alvo.getAttribute('href') || '';
+    if (destino.charAt(0) === '#') {{
+      // botão que só rola até a caixa de preço
+      fbq('trackCustom', 'CliqueAncora');
+      return;
+    }}
+    fbq('track', 'InitiateCheckout', {{
+      content_name: 'Pack Educacao Infantil Completa',
+      content_type: 'product',
+      value: 9.90,
+      currency: 'BRL'
+    }});
+  }}, true);
+}})();
 </script>
 </body>
 </html>
