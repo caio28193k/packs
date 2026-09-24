@@ -274,9 +274,6 @@ mark{
 }
 .cartao h3{font-size:1.18rem;color:var(--azul)}
 .cartao>p{color:var(--texto-suave);font-size:.97rem}
-.cartao ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
-.cartao li{display:flex;gap:10px;align-items:flex-start;font-size:.94rem;font-weight:700}
-.cartao li svg{width:19px;height:19px;flex:none;fill:var(--verde);margin-top:3px}
 .icone{
   width:54px;height:54px;border-radius:16px;display:grid;place-items:center;
   background:var(--azul-fundo);
@@ -307,35 +304,26 @@ mark{
 .lista-quem svg{width:21px;height:21px;flex:none;fill:var(--verde);margin-top:3px}
 
 
-/* ---------- cartão do arquivo digital ---------- */
-.destaque-arquivo{
-  margin-top:36px;background:var(--azul-fundo);border:2px solid var(--azul-borda);
-  border-radius:24px;padding:clamp(24px,4vw,36px);text-align:left;
+/* ---------- semana compacta ---------- */
+.semana{
+  list-style:none;margin:32px auto 0;padding:0;max-width:560px;display:grid;
+  gap:8px;
 }
-.destaque-arquivo .selo{
-  background:var(--azul-claro);color:#fff;display:inline-block;
-  font-weight:800;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;
-  padding:6px 14px;border-radius:999px;
-}
-.destaque-arquivo h3{font-size:1.5rem;color:var(--azul);margin-top:14px}
-.destaque-arquivo p{margin-top:12px;color:#33456A}
-
-/* ---------- manual de 7 passos ---------- */
-.manual{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:16px}
-.manual li{
-  display:flex;gap:18px;align-items:flex-start;background:#fff;
-  border:2px solid var(--borda);border-radius:20px;padding:24px;
+.semana li{
+  display:flex;gap:14px;align-items:center;background:#fff;
+  border:2px solid var(--borda);border-radius:14px;padding:12px 16px;
   box-shadow:var(--sombra);
 }
-.manual .n{
-  flex:none;width:46px;height:46px;border-radius:14px;display:grid;
-  place-items:center;background:var(--azul);color:#fff;
-  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:1.3rem;
+.semana .dia{
+  flex:none;width:52px;text-align:center;background:var(--azul);color:#fff;
+  font-weight:800;font-size:.76rem;letter-spacing:.06em;border-radius:999px;
+  padding:5px 0;
 }
-.manual li:nth-child(2n) .n{background:var(--laranja)}
-.manual li:nth-child(3n) .n{background:var(--verde)}
-.manual h3{font-size:1.18rem;color:var(--azul)}
-.manual p{margin-top:8px;color:var(--texto-suave);font-size:.98rem}
+.semana li:nth-child(2) .dia{background:var(--laranja)}
+.semana li:nth-child(3) .dia{background:var(--verde)}
+.semana li:nth-child(4) .dia{background:#8B5CF6}
+.semana li:nth-child(5) .dia{background:var(--vermelho)}
+.semana b{font-size:.99rem;color:var(--azul)}
 
 /* ---------- credenciais ---------- */
 .credenciais{
@@ -476,7 +464,7 @@ mark{
 }
 @media (max-width:600px){
   .env{padding-inline:16px}
-  .faixa{padding-block:46px}
+  .faixa{padding-block:38px}
   .topo{font-size:.8rem;padding:10px 16px;line-height:1.4}
 
   /* chamada ocupa a largura toda: polegar não erra e o texto não quebra feio */
@@ -587,17 +575,6 @@ mark{
       pronto para imprimir.
     </p>
 
-    <div class="destaque-arquivo">
-      <span class="selo">Arquivo digital em PDF</span>
-      <h3>Pack Educação Infantil Completa</h3>
-      <p>
-        Material completo com 147 folhas de atividade organizadas pelos cinco
-        campos de experiência da BNCC, 27 materiais de sala para a parede e a
-        rotina, e um guia do professor com a rotina semanal, o mapa dos
-        objetivos e o índice de todas as folhas. PDF em A4, preto e branco,
-        pronto para imprimir quantas vezes você quiser.
-      </p>
-    </div>
 
     <div class="numeros" style="text-align:left">
       <div class="num">
@@ -645,105 +622,17 @@ mark{
       etária.
     </p>
 
-    <div class="passos" style="text-align:left">
-      <div class="passo">
-        <div class="bolha">1</div>
-        <h3>Segunda: o eu, o outro e o nós</h3>
-        <p>Roda de conversa e depois a folha do módulo 1.</p>
-      </div>
-      <div class="passo">
-        <div class="bolha">2</div>
-        <h3>Terça: escuta, fala e imaginação</h3>
-        <p>História lida em voz alta e a folha da letra da semana.</p>
-      </div>
-      <div class="passo">
-        <div class="bolha">3</div>
-        <h3>Quarta: espaços, tempos e quantidades</h3>
-        <p>Contagem com material concreto e depois a folha do número.</p>
-      </div>
-      <div class="passo">
-        <div class="bolha">4</div>
-        <h3>Quinta: corpo, gestos e movimentos</h3>
-        <p>Circuito motor no pátio e depois a trilha de traçado.</p>
-      </div>
-      <div class="passo">
-        <div class="bolha">5</div>
-        <h3>Sexta: traços, sons, cores e formas</h3>
-        <p>Música ou pintura livre e depois a folha de formas.</p>
-      </div>
-    </div>
+    <ul class="semana" style="text-align:left">
+      <li><span class="dia">SEG</span><b>O eu, o outro e o nós</b></li>
+      <li><span class="dia">TER</span><b>Escuta, fala e imaginação</b></li>
+      <li><span class="dia">QUA</span><b>Espaços, tempos e quantidades</b></li>
+      <li><span class="dia">QUI</span><b>Corpo, gestos e movimentos</b></li>
+      <li><span class="dia">SEX</span><b>Traços, sons, cores e formas</b></li>
+    </ul>
   </div>
 </section>
 
-<!-- ================= 4. DICAS PARA PROFESSORES ================= -->
-<section class="faixa">
-  <div class="env centro">
-    <p class="olho verde">Dicas para professores</p>
-    <h2 class="secao">Como aplicar o pack passo a passo</h2>
-    <p class="sub-secao">
-      Cinco etapas para transformar a folha impressa em atividade com
-      sentido, e não em passatempo.
-    </p>
 
-    <ol class="manual" style="text-align:left">
-      <li>
-        <span class="n">1</span>
-        <div>
-          <h3>Imprima só a semana</h3>
-          <p>
-            Cinco folhas por vez, não as 147. Assim você ajusta o ritmo à sua
-            turma e não gasta papel com folha que talvez não use.
-          </p>
-        </div>
-      </li>
-      <li>
-        <span class="n">2</span>
-        <div>
-          <h3>Comece pela roda, não pela folha</h3>
-          <p>
-            Converse, conte a história, conte os objetos de verdade, e leia o
-            enunciado em voz alta: nessa idade a criança ainda não lê. A folha
-            registra o que ela já viveu, não substitui a experiência.
-          </p>
-        </div>
-      </li>
-      <li>
-        <span class="n">3</span>
-        <div>
-          <h3>Uma folha por dia, no máximo</h3>
-          <p>
-            Duas seguidas cansam a mão e a atenção de quem tem 4 anos. O
-            cansaço vira letra torta e a criança acha que não sabe.
-          </p>
-        </div>
-      </li>
-      <li>
-        <span class="n">4</span>
-        <div>
-          <h3>Deixe pintar antes de corrigir</h3>
-          <p>
-            A folha é preto e branco de propósito: o espaço em branco é da
-            criança. Pintar é parte da atividade, não enfeite.
-          </p>
-        </div>
-      </li>
-      <li>
-        <span class="n">5</span>
-        <div>
-          <h3>Copie o código e guarde a folha</h3>
-          <p>
-            Cada folha traz o código do objetivo da BNCC no rodapé: copie na
-            hora, ainda com ela na mão, e o planejamento sai junto. Depois
-            guarde na pasta da criança, que no fim do ano vira o portfólio e a
-            base do parecer descritivo.
-          </p>
-        </div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ================= 5. PRÉVIA ================= -->
 <section class="faixa previa">
   <div class="env centro">
     <p class="olho">Prévia do material</p>
@@ -805,22 +694,14 @@ mark{
         <p>Coordenar suas habilidades manuais no atendimento adequado a seus interesses e necessidades em situações diversas.</p>
         <p class="quantas">16 folhas</p>
       </div>
-      <div class="codigo">
-        <span class="tag">EI03EO02</span>
-        <p>Agir de maneira independente, com confiança em suas capacidades, reconhecendo suas conquistas e limitações.</p>
-        <p class="quantas">7 folhas</p>
-      </div>
-      <div class="codigo">
-        <span class="tag">EI03EO03</span>
-        <p>Ampliar as relações interpessoais, desenvolvendo atitudes de participação e cooperação.</p>
-        <p class="quantas">5 folhas</p>
-      </div>
     </div>
 
     <details class="mais-codigos" style="text-align:left">
-      <summary>Ver os outros 18 códigos cobertos pelo pack</summary>
+      <summary>Ver os outros 20 códigos cobertos pelo pack</summary>
       <ul>
         <li><b>EI03EO01</b> empatia</li>
+        <li><b>EI03EO02</b> agir com independência</li>
+        <li><b>EI03EO03</b> participação e cooperação</li>
         <li><b>EI03EO04</b> comunicar ideias</li>
         <li><b>EI03EO05</b> valorizar o corpo</li>
         <li><b>EI03EO06</b> culturas e modos de vida</li>
@@ -859,66 +740,36 @@ mark{
         <span class="selo">PDF bônus</span>
         <h3>Bônus 1: Silabário Completo</h3>
         <p>As 20 famílias silábicas em folhas grandes, para ler com a turma.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>Inclui CH, LH e NH</li>
-          <li><svg><use href="#i-check"></use></svg>Letra grande para leitura coletiva</li>
-          <li><svg><use href="#i-check"></use></svg>Página das vogais para começar</li>
-        </ul>
       </div>
       <div class="cartao">
         <div class="icone"><svg><use href="#i-cracha"></use></svg></div>
         <span class="selo">PDF bônus</span>
         <h3>Bônus 2: Alfabeto de Parede</h3>
         <p>Vinte e seis cartazes, uma letra por folha, para montar na sala.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>Maiúscula, minúscula, palavra e figura</li>
-          <li><svg><use href="#i-check"></use></svg>Traço grosso, imprime e pinta bem</li>
-          <li><svg><use href="#i-check"></use></svg>Monte na altura dos olhos da criança</li>
-        </ul>
       </div>
       <div class="cartao">
         <div class="icone"><svg><use href="#i-calendario"></use></svg></div>
         <span class="selo">PDF bônus</span>
         <h3>Bônus 3: Números de Parede</h3>
         <p>Do 0 ao 20, com o nome por extenso e a quantidade desenhada.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>21 cartazes, um por número</li>
-          <li><svg><use href="#i-check"></use></svg>Quantidade em bolinhas para contar</li>
-          <li><svg><use href="#i-check"></use></svg>É o que a BNCC pede em EI03ET07</li>
-        </ul>
       </div>
       <div class="cartao">
         <div class="icone"><svg><use href="#i-ficha"></use></svg></div>
         <span class="selo">PDF bônus</span>
         <h3>Bônus 4: Pautas de Caligrafia</h3>
         <p>Folhas em branco em três tamanhos, para usar o ano inteiro.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>Pauta grande, média e pequena</li>
-          <li><svg><use href="#i-check"></use></svg>Duas folhas quadriculadas</li>
-          <li><svg><use href="#i-check"></use></svg>Folha do nome, para treinar todo dia</li>
-        </ul>
       </div>
       <div class="cartao">
         <div class="icone"><svg><use href="#i-impressora"></use></svg></div>
         <span class="selo">PDF bônus</span>
         <h3>Bônus 5: Bilhetes para a Família</h3>
         <p>Doze bilhetes prontos para recortar e mandar na agenda.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>Reunião, material, lembrete e elogio</li>
-          <li><svg><use href="#i-check"></use></svg>Linhas para escrever à mão</li>
-          <li><svg><use href="#i-check"></use></svg>Espaço para a assinatura da família</li>
-        </ul>
       </div>
       <div class="cartao">
         <div class="icone"><svg><use href="#i-medalha"></use></svg></div>
         <span class="selo">PDF bônus</span>
         <h3>Bônus 6: Medalhas e Elogios</h3>
         <p>Para recortar e entregar na hora em que a criança merece.</p>
-        <ul>
-          <li><svg><use href="#i-check"></use></svg>9 medalhas de recorte, com fita</li>
-          <li><svg><use href="#i-check"></use></svg>8 cartelas de elogio para a agenda</li>
-          <li><svg><use href="#i-check"></use></svg>Quadro das conquistas do ano</li>
-        </ul>
       </div>
     </div>
   </div>
