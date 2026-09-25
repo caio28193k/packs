@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Monte a semana de Pré I e Pré II e veja qual folha do pack imprimir em cada dia. Funciona no celular, sem instalar e sem login.">
+<meta name="description" content="Parecer descritivo, reunião de pais e plano da semana para Pré I e Pré II. Funciona no celular, sem instalar e sem login.">
 <meta name="theme-color" content="#12336B">
 <meta name="robots" content="noindex">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Plano da Semana | Pack Educação Infantil">
-<meta property="og:description" content="Monte a semana de Pré I e Pré II e veja qual folha do pack imprimir em cada dia. Funciona no celular, sem instalar e sem login.">
-<meta property="og:url" content="https://packatividades.vercel.app/app/">
-<link rel="canonical" href="https://packatividades.vercel.app/app/">
+<meta property="og:title" content="App do Professor | Pack Educação Infantil">
+<meta property="og:description" content="Parecer descritivo, reunião de pais e plano da semana para Pré I e Pré II. Funciona no celular, sem instalar e sem login.">
+<meta property="og:url" content="https://packatividades.vercel.app/app/completo/">
+<link rel="canonical" href="https://packatividades.vercel.app/app/completo/">
 <!--
   APP DO PROFESSOR - Pack Educação Infantil
 
@@ -25,7 +25,7 @@
   mesmo código que imprime os PDFs. Para atualizar: python app/dados.py
   e depois python app/montar.py
 -->
-<title>Plano da Semana | Pack Educação Infantil</title>
+<title>App do Professor | Pack Educação Infantil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap">
@@ -378,7 +378,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--azul-claro)
 
   var D = JSON.parse(document.getElementById("dados").textContent);
   // quais módulos este endereço serve. montar.py troca este valor.
-  var MODULOS = ["plano"];
+  var MODULOS = ["parecer", "reuniao", "plano"];
   var TEM = function (m) { return MODULOS.indexOf(m) >= 0; };
   var CHAVE = "app-professor-v1";
   var $ = function (id) { return document.getElementById(id); };
