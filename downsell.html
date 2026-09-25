@@ -186,6 +186,8 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 .garantia b{display:block;color:var(--verde-escuro);font-family:"Baloo 2",sans-serif;font-size:1.02rem}
 .garantia p{margin-top:3px;font-size:.92rem;color:#2C5E42}
 
+#hotmart-sales-funnel{margin:22px 0 4px}
+#hotmart-sales-funnel:empty{display:none}
 .rodape{color:var(--suave);font-size:.84rem;text-align:center;padding:22px 18px 36px}
 
 @media (min-width:720px){
@@ -271,6 +273,15 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
         Um clique só, no botão aqui embaixo. Você não precisa digitar o
         cartão de novo.
       </p>
+
+      <!-- HOTMART - Sales Funnel Widget -->
+      <div id="hotmart-sales-funnel"></div>
+      <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
+      <script>
+      checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
+      </script>
+      <!-- HOTMART - Sales Funnel Widget -->
+
 
       <div class="garantia" style="text-align:left">
         <svg><use href="#i-escudo"></use></svg>
