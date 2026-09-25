@@ -395,7 +395,9 @@ mark{
 
 /* última chamada: no desktop não existe barra fixa, então o fim da página
    precisa do botão. no celular é redundante, mas custa uma linha */
-.ultima{margin-top:34px}
+.ultima{margin-top:30px}
+.fecho{color:var(--texto-suave);max-width:46ch;margin:0 auto 18px;font-size:1rem;line-height:1.45}
+.fecho b{display:block;color:var(--azul);font-family:"Baloo 2",sans-serif;font-size:1.2rem;line-height:1.25;margin-bottom:4px}
 
 .rodape{background:#0D2550;color:#93AFD4;padding-block:30px;font-size:.86rem}
 .rodape p+p{margin-top:10px}
@@ -498,10 +500,10 @@ mark{
   <div class="env heroi-grade">
     <div>
       <p class="olho">Material pedagógico digital</p>
-      <h1>Planeje uma vez e <em>imprima o ano inteiro</em> da sua turma.</h1>
+      <h1>Planeje uma vez e <em>imprima o ano inteiro</em> de Pré I e Pré II.</h1>
       <p class="lead">
-        O Pack Educação Infantil Completa é um material desenvolvido para
-        resolver o planejamento de Pré I e Pré II do começo ao fim do ano. São
+        O Pack Educação Infantil Completa é um material pedagógico criado para
+        resolver o planejamento da sua turma do começo ao fim do ano. São
         147 folhas organizadas pelos cinco campos de experiência, com o
         <mark>código da BNCC impresso em cada uma</mark>, prontas para imprimir
         em preto e branco na impressora que a sua escola já tem.
@@ -543,18 +545,18 @@ mark{
     <p class="olho">Veja o material</p>
     <h2 class="secao">Páginas reais do arquivo, sem retoque</h2>
     <p class="sub-secao">
-      147 folhas de atividade mais o guia do professor, em um arquivo só,
-      pronto para imprimir. Toda figura foi desenhada para este pack.
+      147 folhas de atividade mais o guia do professor. Toda figura foi
+      desenhada para este pack.
     </p>
 
     <div class="galeria">
       <figure>
         <div class="papel"><img width="680" height="962" loading="lazy" decoding="async" src="img/capa.webp" alt="Capa do Pack Educação Infantil Completa"></div>
-        <figcaption>A capa do pack</figcaption>
+        <figcaption>Um arquivo só, pronto para imprimir</figcaption>
       </figure>
       <figure>
         <div class="papel"><img width="680" height="962" loading="lazy" decoding="async" src="img/cartaz-alfabeto.webp" alt="Cartaz do alfabeto para a parede"></div>
-        <figcaption>Cartaz do alfabeto</figcaption>
+        <figcaption>Vai para a parede no primeiro dia</figcaption>
       </figure>
       <figure>
         <div class="papel"><img width="680" height="962" loading="lazy" decoding="async" src="img/colagem-formas.webp" alt="Folha de recorte e colagem de formas"></div>
@@ -562,15 +564,15 @@ mark{
       </figure>
       <figure>
         <div class="papel"><img width="680" height="962" loading="lazy" decoding="async" src="img/mapa-bncc.webp" alt="Página do guia com o mapa da BNCC"></div>
-        <figcaption>Mapa da BNCC no guia</figcaption>
+        <figcaption>Qual folha cobre qual objetivo</figcaption>
       </figure>
     </div>
 
     <div class="tiras">
-      <div class="tira"><b>147</b><span>Folhas de atividade</span></div>
-      <div class="tira"><b>26</b><span>Folhas de alfabeto</span></div>
-      <div class="tira"><b>21</b><span>Folhas de números</span></div>
-      <div class="tira"><b>27</b><span>Materiais de sala</span></div>
+      <div class="tira"><b>147</b><span>Folhas no total</span></div>
+      <div class="tira"><b>26</b><span>Letras, uma por folha</span></div>
+      <div class="tira"><b>21</b><span>Números, do 0 ao 20</span></div>
+      <div class="tira"><b>27</b><span>Cartazes, crachás e calendários</span></div>
     </div>
 
     <div class="bncc-faixa">
@@ -623,7 +625,8 @@ mark{
       <li><span class="dia">SEX</span><b>Traços, sons, cores e formas</b></li>
     </ul>
     <p class="cond" style="margin-top:12px">
-      A semana já vem montada no guia: um campo de experiência por dia.
+      A semana já vem montada: um campo de experiência por dia, e o plano no
+      celular diz qual folha imprimir.
     </p>
   </div>
 </section>
@@ -641,15 +644,15 @@ mark{
     <ul class="bonus">
       <li>
         <span class="ic"><svg><use href="#i-livro"></use></svg></span>
-        <span><b>Silabário Completo</b><span>As 20 famílias silábicas em folhas grandes.</span></span>
+        <span><b>Silabário Completo</b><span>As 20 famílias silábicas em folhas grandes, para a parede.</span></span>
       </li>
       <li>
         <span class="ic"><svg><use href="#i-cracha"></use></svg></span>
-        <span><b>Alfabeto de Parede</b><span>26 cartazes, uma letra por folha.</span></span>
+        <span><b>Alfabeto de Parede</b><span>26 cartazes para montar o varal da sala.</span></span>
       </li>
       <li>
         <span class="ic"><svg><use href="#i-calendario"></use></svg></span>
-        <span><b>Números de Parede</b><span>Do 0 ao 20, com a quantidade desenhada.</span></span>
+        <span><b>Números de Parede</b><span>Do 0 ao 20, com a quantidade para contar junto.</span></span>
       </li>
       <li>
         <span class="ic"><svg><use href="#i-ficha"></use></svg></span>
@@ -657,11 +660,11 @@ mark{
       </li>
       <li>
         <span class="ic"><svg><use href="#i-impressora"></use></svg></span>
-        <span><b>Bilhetes para a Família</b><span>12 bilhetes prontos para a agenda.</span></span>
+        <span><b>Bilhetes para a Família</b><span>12 bilhetes prontos, sem escrever um por um.</span></span>
       </li>
       <li>
         <span class="ic"><svg><use href="#i-medalha"></use></svg></span>
-        <span><b>Medalhas e Elogios</b><span>Para recortar e entregar na hora certa.</span></span>
+        <span><b>Medalhas e Elogios</b><span>Para entregar no dia em que a criança conseguir.</span></span>
       </li>
     </ul>
   </div>
@@ -677,9 +680,8 @@ mark{
       <div class="cabeca">Pack Educação Infantil Completa + 6 bônus</div>
       <div class="corpo">
         <ul class="inclui" style="text-align:left">
-          <li><svg><use href="#i-check"></use></svg>147 folhas de atividade alinhadas à BNCC, em PDF A4</li>
+          <li><svg><use href="#i-check"></use></svg>147 folhas alinhadas à BNCC, em PDF A4, com cartazes, calendários, crachás e certificados</li>
           <li><svg><use href="#i-check"></use></svg>Guia do professor com rotina semanal e mapa dos objetivos</li>
-          <li><svg><use href="#i-check"></use></svg>27 materiais de sala: cartazes, calendários, crachás e certificados</li>
           <li><svg><use href="#i-check"></use></svg>6 bônus em PDF, com 71 páginas de material extra</li>
           <li><svg><use href="#i-check"></use></svg>Arquivo digital em PDF, imprima quantas vezes quiser</li>
           <li><svg><use href="#i-check"></use></svg>Plano da semana no celular, que diz qual folha imprimir em cada dia</li>
@@ -690,8 +692,8 @@ mark{
           <p>228 páginas por R$ 9,90 dão <b>menos de 5 centavos por página</b>,
           pagos uma única vez.</p>
           <p class="comparacao">
-            Tirar essas mesmas 147 folhas na papelaria, a R$ 0,50 a cópia,
-            custaria R$ 73,50 &mdash; e só para uma criança, uma vez.
+            Na papelaria, R$ 9,90 paga 19 cópias. Aqui paga 228 páginas, que
+            você imprime quantas vezes quiser.
           </p>
         </div>
 
@@ -740,7 +742,11 @@ mark{
     <div class="faq" style="text-align:left">
       <details>
         <summary>Como recebo o material?</summary>
-        <div class="resposta">No mesmo minuto da confirmação do pagamento, inclusive no Pix. São arquivos em PDF: você recebe o link de download por e-mail e também na tela, logo depois da compra. Nada é enviado pelos Correios.</div>
+        <div class="resposta">O acesso chega no seu e-mail no mesmo minuto da confirmação, inclusive no Pix. Os PDFs ficam na área de membros da Hotmart e você baixa quantas vezes precisar. Nada é enviado pelos Correios.</div>
+      </details>
+      <details>
+        <summary>O plano da semana precisa instalar?</summary>
+        <div class="resposta">Não. Ele abre no navegador do celular ou do computador, pelo link e pelo QR code que vêm no guia. Funciona no iPhone e no Android, e o que você salva fica no seu aparelho.</div>
       </details>
       <details>
         <summary>Preciso de impressora colorida?</summary>
@@ -752,7 +758,7 @@ mark{
       </details>
       <details>
         <summary>Serve para usar em sala de aula?</summary>
-        <div class="resposta">Serve, e foi feito para isso. Você pode imprimir para a turma inteira, quantas vezes quiser e por quantos anos quiser, nas turmas em que você dá aula. O que não pode é revender o arquivo nem publicá-lo em grupo aberto. Para a equipe inteira de uma escola existe uma licença própria.</div>
+        <div class="resposta">Serve, e foi feito para isso. Você pode imprimir para a turma inteira, quantas vezes quiser e por quantos anos quiser, nas turmas em que você dá aula. O que não pode é revender o arquivo nem publicá-lo em grupo aberto.</div>
       </details>
       <details>
         <summary>E se eu não gostar?</summary>
@@ -761,9 +767,11 @@ mark{
     </div>
 
     <div class="ultima">
+      <p class="fecho"><b>Cada folha feita hoje prepara a sua turma para o 1º ano.</b>
+      Acesso imediato, garantia de 7 dias e pagamento único de R$ 9,90.</p>
       <a class="btn" href="https://pay.hotmart.com/Y107766524M?checkoutMode=10" rel="noopener">
         <span class="seta"><svg><use href="#i-seta"></use></svg></span>
-        Liberar acesso por R$ 9,90
+        Liberar acesso agora
       </a>
     </div>
   </div>
