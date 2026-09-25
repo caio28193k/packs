@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Parecer descritivo, reunião de pais e plano da semana para Pré I e Pré II. Funciona no celular, sem instalar e sem login.">
+<meta name="theme-color" content="#12336B">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="App do Professor | Pack Educação Infantil">
+<meta property="og:description" content="Parecer descritivo, reunião de pais e plano da semana para Pré I e Pré II. Funciona no celular, sem instalar e sem login.">
+<meta property="og:url" content="https://packatividades.vercel.app/app/">
+<link rel="canonical" href="https://packatividades.vercel.app/app/">
+<!--
+  APP DO PROFESSOR - Pack Educação Infantil
+
+  Três módulos: parecer descritivo, reunião de pais e plano da semana.
+
+  Nada sai do aparelho da professora. Nome de criança é dado pessoal de
+  criança, com proteção reforçada na LGPD, então não existe servidor, não
+  existe login e não existe envio: tudo mora no localStorage do navegador
+  dela. Isso não é limitação técnica, é o desenho do produto.
+
+  O conteúdo vem de app/dados.json, gerado por app/dados.py a partir do
+  mesmo código que imprime os PDFs. Para atualizar: python app/dados.py
+  e depois python app/montar.py
+-->
+<title>App do Professor | Pack Educação Infantil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap">
+
+<style>
+:root{
+  color-scheme:light;
+  --azul:#12336B; --azul-claro:#2563EB; --azul-fundo:#EAF3FC; --azul-borda:#CFE2F7;
+  --laranja:#F26522; --laranja-claro:#FFE9DC;
+  --vermelho:#E02B20; --vermelho-claro:#FFE5E3;
+  --verde:#1FA355; --verde-escuro:#17803F; --verde-claro:#E3F7EA;
+  --amarelo:#FFC72C; --amarelo-claro:#FFF4D6;
+  --creme:#FFF8EE; --branco:#fff;
+  --texto:#1B2A44; --suave:#5A6B85; --borda:#E6EDF6;
+  --sombra:0 4px 0 rgba(18,51,107,.07);
+  --max:1000px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;color-scheme:light;background:var(--creme);color:var(--texto);
+  font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Baloo 2","Nunito",sans-serif;font-weight:800;line-height:1.15;margin:0}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.env{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:16px}
+
+/* ---------- topo ---------- */
+.topo{background:var(--azul);color:#fff;padding:14px 0}
+.topo .env{display:flex;align-items:center;gap:10px}
+.topo h1{font-size:1.06rem;letter-spacing:.01em}
+.topo .marca{
+  width:32px;height:32px;flex:none;border-radius:9px;background:var(--amarelo);
+  display:grid;place-items:center;color:#3A2A00;font-family:"Baloo 2",sans-serif;
+  font-weight:800;font-size:1rem;
+}
+
+/* ---------- abas ---------- */
+.abas{
+  position:sticky;top:0;z-index:20;background:var(--branco);
+  border-bottom:2px solid var(--borda);
+}
+.abas .env{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.abas .env::-webkit-scrollbar{display:none}
+.aba{
+  flex:1 0 auto;min-height:52px;padding:8px 14px;border:0;background:none;
+  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:.95rem;
+  color:var(--suave);cursor:pointer;border-bottom:3px solid transparent;
+  white-space:nowrap;
+}
+.aba[aria-selected="true"]{color:var(--azul);border-bottom-color:var(--laranja)}
+.aba:focus-visible{outline:3px solid var(--azul-claro);outline-offset:-3px}
+
+/* ---------- blocos ---------- */
+main{padding-block:18px 60px}
+.cartao{
+  background:var(--branco);border:2px solid var(--borda);border-radius:16px;
+  padding:16px;box-shadow:var(--sombra);margin-bottom:14px;
+}
+.cartao h2{font-size:1.2rem;color:var(--azul);margin-bottom:4px}
+.cartao h3{font-size:1.02rem;color:var(--azul)}
+.ajuda{color:var(--suave);font-size:.92rem}
+.linha{display:flex;flex-wrap:wrap;gap:10px}
+.linha>*{flex:1 1 180px}
+
+label{display:block;font-weight:700;font-size:.86rem;color:var(--suave);margin-bottom:5px}
+input[type=text],input[type=date],input[type=time],select,textarea{
+  width:100%;min-height:48px;padding:11px 13px;border:2px solid var(--borda);
+  border-radius:11px;background:var(--branco);
+}
+textarea{min-height:120px;line-height:1.5;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--azul-claro)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:12px 18px;border:0;border-radius:999px;cursor:pointer;
+  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:1rem;
+  background:var(--verde);color:#fff;box-shadow:0 4px 0 var(--verde-escuro);
+}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--verde-escuro)}
+.btn:focus-visible{outline:3px solid var(--amarelo);outline-offset:3px}
+.btn.larga{width:100%}
+.btn.calma{background:var(--branco);color:var(--azul);border:2px solid var(--azul-borda);box-shadow:none}
+.btn.calma:active{transform:none}
+.btn.pequena{min-height:44px;padding:9px 15px;font-size:.88rem}
+
+/* ---------- listas ---------- */
+.lista{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.lista li{margin:0}
+.item{
+  width:100%;display:flex;align-items:center;gap:12px;text-align:left;
+  min-height:56px;padding:10px 14px;background:var(--branco);cursor:pointer;
+  border:2px solid var(--borda);border-radius:13px;
+}
+.item:hover{border-color:var(--azul-borda)}
+.item b{flex:1;font-weight:700;font-size:1rem}
+.item .selo{
+  flex:none;font-size:.74rem;font-weight:800;padding:4px 10px;border-radius:999px;
+  background:var(--borda);color:var(--suave);
+}
+.item .selo.ok{background:var(--verde-claro);color:var(--verde-escuro)}
+.item .seta{flex:none;color:var(--suave);font-weight:800}
+
+/* ---------- marcação C / P / A ---------- */
+.objetivo{border-top:2px solid var(--borda);padding-top:12px;margin-top:12px}
+.objetivo:first-child{border-top:0;padding-top:0;margin-top:0}
+.objetivo .cod{font-weight:800;font-size:.78rem;color:var(--laranja);letter-spacing:.05em}
+.objetivo .curto{font-weight:700;font-size:.97rem;margin:2px 0 9px}
+.niveis{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.nivel{
+  min-height:48px;border:2px solid var(--borda);border-radius:11px;
+  background:var(--branco);cursor:pointer;font-weight:800;font-size:.84rem;
+  color:var(--suave);display:grid;place-items:center;line-height:1.2;padding:4px;
+}
+.nivel small{display:block;font-size:.66rem;font-weight:700;opacity:.85}
+.nivel[aria-pressed="true"][data-n="C"]{background:var(--verde-claro);border-color:var(--verde);color:var(--verde-escuro)}
+.nivel[aria-pressed="true"][data-n="P"]{background:var(--amarelo-claro);border-color:var(--amarelo);color:#6B5200}
+.nivel[aria-pressed="true"][data-n="A"]{background:var(--vermelho-claro);border-color:var(--vermelho);color:#8C1C14}
+.nivel:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+
+.campo-titulo{
+  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:.8rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--azul-claro);
+  margin:18px 0 10px;
+}
+
+/* ---------- saída de texto ---------- */
+.saida{
+  background:var(--azul-fundo);border:2px solid var(--azul-borda);
+  border-radius:13px;padding:14px;white-space:pre-wrap;line-height:1.65;
+  font-size:.97rem;
+}
+.acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.acoes .btn{flex:1 1 150px}
+
+.vazio{text-align:center;color:var(--suave);padding:26px 10px}
+
+/* ---------- dias da semana ---------- */
+.dia{border:2px solid var(--borda);border-radius:13px;padding:12px;margin-bottom:10px}
+.dia .cabeca{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.dia .sigla{
+  flex:none;width:52px;text-align:center;background:var(--azul);color:#fff;
+  font-weight:800;font-size:.74rem;letter-spacing:.06em;border-radius:999px;padding:5px 0;
+}
+.dia:nth-child(2) .sigla{background:var(--laranja)}
+.dia:nth-child(3) .sigla{background:var(--verde)}
+.dia:nth-child(4) .sigla{background:#8B5CF6}
+.dia:nth-child(5) .sigla{background:var(--vermelho)}
+.dia select{min-height:44px;flex:1}
+.dia .folha{background:var(--creme);border-radius:10px;padding:11px;font-size:.92rem}
+.dia .folha b{color:var(--azul)}
+.dia .folha .en{color:var(--suave);display:block;margin-top:3px}
+.dia .folha .cod{font-weight:800;color:var(--laranja);font-size:.78rem}
+
+/* ---------- assuntos da reunião ---------- */
+.assuntos{display:grid;gap:7px;margin-top:10px}
+.assunto{
+  display:flex;align-items:center;gap:11px;min-height:50px;padding:9px 13px;
+  border:2px solid var(--borda);border-radius:12px;cursor:pointer;font-size:.95rem;
+  background:var(--branco);
+}
+.assunto input{width:22px;height:22px;flex:none;accent-color:var(--verde);min-height:0}
+.assunto:has(input:checked){border-color:var(--verde);background:var(--verde-claro)}
+
+.rodape{color:var(--suave);font-size:.82rem;text-align:center;padding:20px 16px 34px}
+.rodape a{color:inherit}
+
+/* ---------- desktop ---------- */
+@media (min-width:860px){
+  body{font-size:17px}
+  main{padding-block:26px 70px}
+  .cartao{padding:22px 24px;border-radius:20px}
+  .niveis{grid-template-columns:repeat(3,minmax(0,150px))}
+  #objetivos{columns:2;column-gap:30px}
+  #objetivos .objetivo{break-inside:avoid;padding-top:14px}
+  #objetivos .objetivo:first-child{border-top:2px solid var(--borda);padding-top:14px}
+  #objetivos .campo-titulo{break-inside:avoid;break-after:avoid}
+  .abas .env{gap:6px}
+  .aba{flex:0 0 auto;min-width:170px}
+  .acoes .btn{flex:0 0 auto}
+}
+
+@media print{
+  .topo,.abas,.acoes,.rodape,.nao-imprime{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .cartao{border:0;box-shadow:none;padding:0;margin:0}
+  .saida{background:#fff;border:0;padding:0;white-space:pre-wrap}
+  .env{max-width:none;padding:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="topo">
+  <div class="env">
+    <span class="marca" aria-hidden="true">P</span>
+    <h1>App do Professor</h1>
+  </div>
+</div>
+
+<div class="abas">
+  <div class="env" role="tablist" aria-label="Módulos">
+    <button class="aba" role="tab" id="t-parecer" aria-selected="true" aria-controls="p-parecer">Parecer</button>
+    <button class="aba" role="tab" id="t-reuniao" aria-selected="false" aria-controls="p-reuniao">Reunião de pais</button>
+    <button class="aba" role="tab" id="t-plano" aria-selected="false" aria-controls="p-plano">Plano da semana</button>
+  </div>
+</div>
+
+<main class="env">
+
+  <!-- ============================ PARECER ============================ -->
+  <div id="p-parecer" role="tabpanel" aria-labelledby="t-parecer">
+
+    <div class="cartao nao-imprime" id="parecer-turmas">
+      <h2>Suas turmas</h2>
+      <p class="ajuda">Cadastre a turma uma vez. Fica salva neste aparelho.</p>
+      <ul class="lista" id="lista-turmas"></ul>
+      <div style="margin-top:14px">
+        <label for="nova-turma">Nome da turma</label>
+        <input type="text" id="nova-turma" placeholder="Pré II manhã">
+        <label for="novos-nomes" style="margin-top:12px">Nomes das crianças, um por linha</label>
+        <textarea id="novos-nomes" placeholder="Ana Clara&#10;Bernardo&#10;Cecília"></textarea>
+        <button class="btn larga" id="criar-turma" style="margin-top:12px">Criar turma</button>
+      </div>
+    </div>
+
+    <div class="cartao nao-imprime" id="parecer-criancas" hidden>
+      <button class="btn calma pequena" id="voltar-turmas">Voltar para as turmas</button>
+      <h2 style="margin-top:12px" id="nome-turma"></h2>
+      <p class="ajuda" id="resumo-turma"></p>
+      <ul class="lista" id="lista-criancas"></ul>
+      <button class="btn calma pequena" id="apagar-turma" style="margin-top:14px">Apagar esta turma</button>
+    </div>
+
+    <div id="parecer-crianca" hidden>
+      <div class="cartao nao-imprime">
+        <button class="btn calma pequena" id="voltar-criancas">Voltar para a turma</button>
+        <h2 style="margin-top:12px" id="nome-crianca"></h2>
+        <p class="ajuda">Toque no nível de cada objetivo. Só os marcados entram no texto.</p>
+        <div id="objetivos"></div>
+      </div>
+      <div class="cartao">
+        <h3 class="nao-imprime">Parecer</h3>
+        <div class="linha nao-imprime" style="margin:10px 0 12px">
+          <div>
+            <label for="periodo">Período</label>
+            <input type="text" id="periodo" placeholder="2º semestre de 2026">
+          </div>
+          <div>
+            <label for="observacao">Observação sua, opcional</label>
+            <input type="text" id="observacao" placeholder="Frequentou com assiduidade.">
+          </div>
+        </div>
+        <div class="saida" id="saida-parecer">Marque os objetivos acima para o texto aparecer aqui.</div>
+        <div class="acoes">
+          <button class="btn" id="copiar-parecer">Copiar texto</button>
+          <button class="btn calma" id="imprimir-parecer">Gerar PDF</button>
+          <button class="btn calma" id="sortear-parecer">Trocar as frases</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ REUNIÃO ============================ -->
+  <div id="p-reuniao" role="tabpanel" aria-labelledby="t-reuniao" hidden>
+    <div class="cartao nao-imprime">
+      <h2>Reunião de pais</h2>
+      <p class="ajuda">Escolha a data e marque os assuntos. O resto sai pronto.</p>
+      <div class="linha" style="margin-top:14px">
+        <div>
+          <label for="r-turma">Turma</label>
+          <select id="r-turma"></select>
+        </div>
+        <div>
+          <label for="r-data">Data</label>
+          <input type="date" id="r-data">
+        </div>
+        <div>
+          <label for="r-hora">Horário</label>
+          <input type="time" id="r-hora" value="18:00">
+        </div>
+      </div>
+      <div class="linha" style="margin-top:12px">
+        <div>
+          <label for="r-local">Local</label>
+          <input type="text" id="r-local" placeholder="Sala da turma">
+        </div>
+        <div>
+          <label for="r-prof">Assinatura</label>
+          <input type="text" id="r-prof" placeholder="Professora Brenda">
+        </div>
+      </div>
+      <h3 style="margin-top:18px">Assuntos da pauta</h3>
+      <div class="assuntos" id="assuntos"></div>
+    </div>
+
+    <div class="cartao">
+      <h3 class="nao-imprime">Convite, pauta e lista de presença</h3>
+      <div class="saida" id="saida-reuniao" style="margin-top:10px">Marque pelo menos um assunto.</div>
+      <div class="acoes">
+        <button class="btn" id="copiar-reuniao">Copiar texto</button>
+        <button class="btn calma" id="imprimir-reuniao">Gerar PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ PLANO ============================ -->
+  <div id="p-plano" role="tabpanel" aria-labelledby="t-plano" hidden>
+    <div class="cartao nao-imprime">
+      <h2>Plano da semana</h2>
+      <p class="ajuda">Um campo de experiência por dia, como está no guia do pack. O app escolhe a folha e diz o número para imprimir.</p>
+      <div class="linha" style="margin-top:14px">
+        <div>
+          <label for="pl-turma">Turma</label>
+          <select id="pl-turma"></select>
+        </div>
+        <div>
+          <label for="pl-data">Semana de</label>
+          <input type="date" id="pl-data">
+        </div>
+      </div>
+      <div id="dias" style="margin-top:16px"></div>
+      <button class="btn calma larga" id="sortear-semana" style="margin-top:6px">Sortear outra semana inteira</button>
+    </div>
+
+    <div class="cartao">
+      <h3 class="nao-imprime">Plano para copiar</h3>
+      <div class="saida" id="saida-plano" style="margin-top:10px"></div>
+      <div class="acoes">
+        <button class="btn" id="copiar-plano">Copiar texto</button>
+        <button class="btn calma" id="imprimir-plano">Gerar PDF</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<p class="rodape nao-imprime">
+  Tudo que você digita fica salvo só neste aparelho e nunca é enviado para
+  lugar nenhum. Limpar os dados do navegador apaga as turmas.<br>
+  Pack Educação Infantil Completa &middot; Brenda Ferreira
+</p>
+
+<script id="dados" type="application/json">{"campos":{"EO":"O eu, o outro e o nós","CG":"Corpo, gestos e movimentos","TS":"Traços, sons, cores e formas","EF":"Escuta, fala, pensamento e imaginação","ET":"Espaços, tempos, quantidades, relações e transformações"},"niveis":[{"sigla":"C","nome":"JÁ CONQUISTOU"},{"sigla":"P","nome":"EM PROCESSO"},{"sigla":"A","nome":"PRECISA DE APOIO"}],"objetivos":[{"cod":"EI03CG01","campo":"CG","curto":"Expressão de sentimentos por meio do corpo","texto":"Criar com o corpo formas diversificadas de expressão de sentimentos, sensações e emoções, tanto nas situações do cotidiano quanto em brincadeiras, dança, teatro, música.","frases":{"C":["Usa o corpo para expressar o que sente, na dança, no teatro e na brincadeira.","Cria movimentos próprios ao ouvir músicas diferentes.","Representa personagens com gestos e expressões faciais coerentes."],"P":["Experimenta movimentos novos quando o professor propõe.","Começa a criar gestos próprios além dos que imita dos colegas.","Expressa emoções com o corpo em situações de brincadeira livre."],"A":["É convidada a experimentar o movimento com apoio do professor.","Observa antes de participar e recebe tempo para entrar na proposta.","Está sendo acompanhada na ampliação do repertório de movimentos."]}},{"cod":"EI03CG02","campo":"CG","curto":"Controle e adequação do corpo","texto":"Demonstrar controle e adequação do uso de seu corpo em brincadeiras e jogos, escuta e reconto de histórias, atividades artísticas, entre outras possibilidades.","frases":{"C":["Controla bem o próprio corpo em jogos, corridas e circuitos.","Adequa a força e a velocidade do movimento à situação.","Permanece sentada e atenta durante a escuta de histórias."],"P":["Ganha controle corporal a cada proposta de circuito motor.","Já equilibra bem em superfícies largas e treina as estreitas.","Está aprendendo a medir a força ao brincar com os colegas."],"A":["Recebe apoio para ajustar o movimento ao espaço da sala.","É acompanhada nos momentos de maior agitação corporal.","Está desenvolvendo o controle do corpo em atividades dirigidas."]}},{"cod":"EI03CG03","campo":"CG","curto":"Criação de movimentos, gestos e mímicas","texto":"Criar movimentos, gestos, olhares e mímicas em brincadeiras, jogos e atividades artísticas como dança, teatro e música.","frases":{"C":["Inventa gestos e mímicas nas brincadeiras e nas atividades artísticas.","Participa de jogos de imitação criando variações próprias.","Usa o olhar e a expressão do rosto para compor o personagem."],"P":["Imita os gestos propostos e começa a criar os próprios.","Participa das brincadeiras de mímica com entusiasmo crescente.","Cria movimentos novos quando brinca com um parceiro de confiança."],"A":["É incentivada a participar dos jogos de imitação.","Recebe apoio para arriscar gestos diante do grupo.","Está sendo acompanhada nas propostas de expressão corporal."]}},{"cod":"EI03CG04","campo":"CG","curto":"Autocuidado: higiene, alimentação e conforto","texto":"Adotar hábitos de autocuidado relacionados à higiene, alimentação, conforto e aparência.","frases":{"C":["Cuida da própria higiene com autonomia, sem precisar de lembrete.","Alimenta-se sozinha e aceita experimentar alimentos novos.","Percebe quando está com frio, calor ou desconforto e resolve sozinha."],"P":["Lava as mãos e escova os dentes com pouca ajuda.","Está construindo a rotina de autocuidado com lembretes do professor.","Veste-se sozinha na maior parte das peças."],"A":["Recebe apoio direto nas rotinas de higiene.","É acompanhada nos momentos de alimentação.","Está sendo incentivada a assumir aos poucos o próprio cuidado."]}},{"cod":"EI03CG05","campo":"CG","curto":"Coordenação das habilidades manuais","texto":"Coordenar suas habilidades manuais no atendimento adequado a seus interesses e necessidades em situações diversas.","frases":{"C":["Usa a tesoura, o lápis e o pincel com firmeza e precisão.","Segura o lápis em pinça e controla bem o traçado dentro do limite.","Manipula peças pequenas com destreza em jogos de encaixe."],"P":["Ganha precisão no traçado a cada atividade proposta.","Recorta sobre a linha reta e treina as linhas curvas.","Está firmando a pinça na hora de segurar o lápis."],"A":["Recebe apoio para ajustar a preensão do lápis.","É acompanhada no uso da tesoura.","Está desenvolvendo a coordenação motora fina nas atividades diárias."]}},{"cod":"EI03EF01","campo":"EF","curto":"Expressão de ideias e vivências","texto":"Expressar ideias, desejos e sentimentos sobre suas vivências, por meio da linguagem oral e escrita (escrita espontânea), de fotos, desenhos e outras formas de expressão.","frases":{"C":["Conta as próprias vivências com começo, meio e fim.","Registra o que viveu por meio do desenho e da escrita espontânea.","Expressa opinião e justifica a escolha que fez."],"P":["Relata o que viveu com frases curtas e ganha detalhe a cada relato.","Usa o desenho para contar o que viveu e começa a acrescentar letras.","Fala das próprias vivências quando questionada."],"A":["É incentivada a relatar o que viveu com perguntas dirigidas.","Recebe apoio para registrar as vivências por desenho.","Está sendo acompanhada na expressão oral das próprias ideias."]}},{"cod":"EI03EF02","campo":"EF","curto":"Rimas, aliterações e ritmos","texto":"Inventar brincadeiras cantadas, poemas e canções, criando rimas, aliterações e ritmos.","frases":{"C":["Percebe rimas e cria novas a partir das que ouve.","Inventa versos e brincadeiras cantadas com os colegas.","Identifica palavras que começam com o mesmo som."],"P":["Reconhece rimas conhecidas e começa a criar as próprias.","Participa das parlendas e cantigas acompanhando o ritmo.","Percebe o som inicial das palavras em atividades dirigidas."],"A":["É apoiada a perceber a semelhança sonora entre palavras.","Participa das cantigas com mediação.","Está sendo acompanhada nas brincadeiras com os sons das palavras."]}},{"cod":"EI03EF03","campo":"EF","curto":"Escolha e manuseio de livros","texto":"Escolher e folhear livros, procurando orientar-se por temas e ilustrações e tentando identificar palavras conhecidas.","frases":{"C":["Escolhe livros por interesse próprio e comenta sobre as ilustrações.","Folheia o livro na ordem correta e antecipa a história pelas imagens.","Reconhece palavras conhecidas no meio do texto."],"P":["Manuseia os livros com cuidado e escolhe pelo tema da capa.","Começa a usar as ilustrações para imaginar a história.","Frequenta o canto da leitura por iniciativa própria."],"A":["É convidada ao canto da leitura com apoio do professor.","Recebe mediação no manuseio dos livros.","Está sendo acompanhada na formação do interesse pela leitura."]}},{"cod":"EI03EF04","campo":"EF","curto":"Reconto de histórias e planejamento de encenações","texto":"Recontar histórias ouvidas e planejar coletivamente roteiros de vídeos e de encenações, definindo os contextos, os personagens, a estrutura da história.","frases":{"C":["Reconta histórias mantendo a sequência e os personagens.","Participa do planejamento coletivo de encenações e propõe ideias.","Cria finais alternativos para as histórias que ouve."],"P":["Reconta as partes principais da história com apoio das ilustrações.","Lembra os personagens e começa a organizar a sequência.","Participa das encenações representando o papel combinado."],"A":["Reconta trechos da história com perguntas do professor.","É apoiada a lembrar a ordem dos acontecimentos.","Está sendo acompanhada no reconto de histórias conhecidas."]}},{"cod":"EI03EF05","campo":"EF","curto":"Reconto escrito com o professor como escriba","texto":"Recontar histórias ouvidas para produção de reconto escrito, tendo o professor como escriba.","frases":{"C":["Dita o reconto com organização, atenta ao que o professor registra.","Percebe que a própria fala vira texto escrito e acompanha o registro.","Revisa o próprio reconto quando o professor relê em voz alta."],"P":["Dita trechos do reconto e aceita bem a mediação na organização.","Acompanha com interesse o professor escrevendo o que ela falou.","Começa a perceber a relação entre o que fala e o que fica escrito."],"A":["É apoiada a ditar o reconto por partes.","Recebe perguntas dirigidas para organizar o que quer registrar.","Está sendo acompanhada na produção de reconto coletivo."]}},{"cod":"EI03EF06","campo":"EF","curto":"Produção de histórias com função social","texto":"Produzir suas próprias histórias orais e escritas (escrita espontânea), em situações com função social significativa.","frases":{"C":["Cria histórias próprias com personagem, cenário e desfecho.","Escreve espontaneamente bilhetes, listas e legendas para os desenhos.","Compreende para que serve escrever e para quem está escrevendo."],"P":["Inventa histórias curtas a partir de uma imagem ou de um objeto.","Produz escrita espontânea usando as letras que já conhece.","Começa a dar função ao que escreve, como marcar o próprio material."],"A":["É incentivada a criar histórias com apoio de imagens.","Recebe mediação nas situações de escrita espontânea.","Está sendo acompanhada na descoberta da função social da escrita."]}},{"cod":"EI03EF07","campo":"EF","curto":"Hipóteses sobre gêneros textuais","texto":"Levantar hipóteses sobre gêneros textuais veiculados em portadores conhecidos, recorrendo a estratégias de observação gráfica e/ou de leitura.","frases":{"C":["Diferencia uma receita de uma história e explica como percebeu.","Levanta hipóteses sobre o conteúdo do texto observando o portador.","Reconhece rótulos, placas e embalagens do cotidiano."],"P":["Percebe que textos diferentes servem para coisas diferentes.","Começa a reconhecer os portadores de texto mais familiares.","Observa a imagem e o formato para supor do que trata o texto."],"A":["É apoiada a observar o portador antes da leitura.","Recebe mediação para diferenciar tipos de texto.","Está sendo acompanhada no contato com gêneros textuais variados."]}},{"cod":"EI03EF08","campo":"EF","curto":"Seleção de livros e textos para leitura","texto":"Selecionar livros e textos de gêneros conhecidos para a leitura de um adulto e/ou para sua própria leitura (partindo de seu repertório sobre esses textos, como a recuperação pela memória, pela leitura das ilustrações etc.).","frases":{"C":["Escolhe o que quer que seja lido e justifica a escolha.","Recupera de memória histórias conhecidas e as lê pelas ilustrações.","Indica livros aos colegas de acordo com o gosto de cada um."],"P":["Escolhe entre duas opções oferecidas e explica o motivo.","Reconhece pela capa os livros que já foram lidos.","Começa a demonstrar preferência por certos temas."],"A":["É apoiada a escolher entre poucas opções.","Recebe mediação na hora de selecionar o livro.","Está sendo acompanhada na construção do gosto pela leitura."]}},{"cod":"EI03EF09","campo":"EF","curto":"Hipóteses sobre a linguagem escrita","texto":"Levantar hipóteses em relação à linguagem escrita, realizando registros de palavras e textos, por meio de escrita espontânea.","frases":{"C":["Escreve o próprio nome sem modelo e reconhece as letras que o compõem.","Arrisca a escrita de palavras usando as letras que conhece.","Percebe que a escrita representa a fala e testa hipóteses sobre isso."],"P":["Escreve o próprio nome consultando o crachá.","Reconhece várias letras do alfabeto, sobretudo as do próprio nome.","Registra palavras acertando algumas letras."],"A":["É apoiada a reconhecer as letras do próprio nome.","Recebe mediação nas situações de escrita.","Está sendo acompanhada no contato diário com a escrita."]}},{"cod":"EI03EO01","campo":"EO","curto":"Empatia e percepção do sentimento do outro","texto":"Demonstrar empatia pelos outros, percebendo que as pessoas têm diferentes sentimentos, necessidades e maneiras de pensar e agir.","frases":{"C":["Percebe quando um colega está triste e procura consolar com gestos ou palavras.","Reconhece que os colegas gostam de coisas diferentes das que ela gosta.","Oferece ajuda espontaneamente quando percebe que alguém precisa."],"P":["Começa a perceber o sentimento do colega quando o adulto nomeia o que aconteceu.","Demonstra interesse pelo que o outro sente, ainda apoiada na mediação do professor.","Já identifica alegria e tristeza no rosto do colega e comenta sobre isso."],"A":["Está sendo acompanhada para perceber os sinais de que um colega precisa de ajuda.","Com apoio do professor, começa a parar e observar a reação do colega.","Recebe mediação constante para reconhecer que o outro sente de forma diferente."]}},{"cod":"EI03EO02","campo":"EO","curto":"Autonomia, confiança e reconhecimento das conquistas","texto":"Agir de maneira independente, com confiança em suas capacidades, reconhecendo suas conquistas e limitações.","frases":{"C":["Realiza sozinha as tarefas da rotina e demonstra orgulho do que conquistou.","Pede ajuda quando precisa, sem desistir da atividade na primeira dificuldade.","Reconhece o que já aprendeu e comenta as próprias conquistas com a turma."],"P":["Tenta sozinha antes de pedir ajuda e aceita bem a mediação quando oferecida.","Ganha confiança a cada dia nas atividades que domina e arrisca as novas.","Começa a perceber os próprios avanços quando o professor os nomeia."],"A":["É incentivada a tentar sozinha antes de recorrer ao adulto.","Recebe apoio para lidar com a frustração diante de uma tarefa difícil.","Está sendo acompanhada para ampliar a autonomia nas tarefas da rotina."]}},{"cod":"EI03EO03","campo":"EO","curto":"Relações interpessoais, participação e cooperação","texto":"Ampliar as relações interpessoais, desenvolvendo atitudes de participação e cooperação.","frases":{"C":["Participa das atividades em grupo e colabora para o resultado coletivo.","Convida colegas para brincar e aceita a entrada de outros na brincadeira.","Assume funções no grupo e cumpre o combinado até o fim."],"P":["Brinca em grupo com prazer e começa a dividir tarefas com os colegas.","Amplia aos poucos o grupo de colegas com quem se relaciona.","Participa das propostas coletivas, ainda escolhendo sempre os mesmos parceiros."],"A":["É convidada a participar das atividades em grupo com apoio do professor.","Recebe mediação para entrar em brincadeiras que já começaram.","Está sendo acompanhada na construção de vínculo com os colegas."]}},{"cod":"EI03EO04","campo":"EO","curto":"Comunicação de ideias e sentimentos","texto":"Comunicar suas ideias e sentimentos a pessoas e grupos diversos.","frases":{"C":["Comunica com clareza o que pensa e o que sente, para adultos e colegas.","Conta novidades na roda e escuta o que os colegas têm a dizer.","Explica o próprio desenho e as escolhas que fez ao produzi-lo."],"P":["Expressa o que sente com frases curtas e ganha vocabulário a cada semana.","Fala na roda quando é convidada e aos poucos toma a iniciativa.","Comunica bem o que quer em pequenos grupos e se retrai no grupo grande."],"A":["É incentivada a falar na roda com perguntas dirigidas do professor.","Comunica-se principalmente por gestos e recebe apoio para nomear o que sente.","Está sendo acompanhada na ampliação do vocabulário de sentimentos."]}},{"cod":"EI03EO05","campo":"EO","curto":"Valorização do próprio corpo e respeito ao do outro","texto":"Demonstrar valorização das características de seu corpo e respeitar as características dos outros.","frases":{"C":["Fala do próprio corpo com naturalidade e respeita as diferenças dos colegas.","Reconhece as próprias características e as descreve sem hierarquizar.","Intervém quando percebe comentário desrespeitoso sobre a aparência de alguém."],"P":["Observa as semelhanças e diferenças entre as pessoas e faz perguntas sobre isso.","Começa a perceber que cada corpo é de um jeito e que todos são bonitos.","Identifica as partes do corpo e compara com as dos colegas com curiosidade."],"A":["Recebe mediação para lidar com comentários sobre aparência na sala.","Está sendo acompanhada na construção de uma imagem positiva de si.","É apoiada a reconhecer e nomear as próprias características."]}},{"cod":"EI03EO06","campo":"EO","curto":"Interesse e respeito por diferentes culturas","texto":"Manifestar interesse e respeito por diferentes culturas e modos de vida.","frases":{"C":["Demonstra interesse por histórias, músicas e comidas de outras culturas.","Conta sobre as tradições da própria família e escuta as dos colegas.","Participa das festas e projetos culturais com envolvimento e curiosidade."],"P":["Começa a perceber que cada família tem costumes próprios.","Participa das propostas sobre cultura com interesse crescente.","Reconhece elementos da própria cultura nas histórias contadas na roda."],"A":["É convidada a falar sobre as tradições da própria família.","Recebe apoio para participar das atividades culturais coletivas.","Está sendo acompanhada no contato com modos de vida diferentes do seu."]}},{"cod":"EI03EO07","campo":"EO","curto":"Respeito mútuo na resolução de conflitos","texto":"Usar estratégias pautadas no respeito mútuo para lidar com conflitos nas interações.","frases":{"C":["Resolve desentendimentos conversando, sem recorrer à agressão.","Espera a própria vez e lembra os colegas dos combinados da turma.","Pede desculpa e aceita o pedido de desculpa do colega."],"P":["Busca o professor para mediar o conflito em vez de reagir sozinha.","Começa a usar a fala para resolver disputas por brinquedo.","Respeita os combinados na maior parte do tempo e se reorganiza quando lembrada."],"A":["Recebe mediação constante nos momentos de conflito com os colegas.","Está sendo acompanhada para substituir a reação física pela fala.","É apoiada a esperar a própria vez nas situações coletivas."]}},{"cod":"EI03ET01","campo":"ET","curto":"Comparação entre objetos e suas propriedades","texto":"Estabelecer relações de comparação entre objetos, observando suas propriedades.","frases":{"C":["Compara objetos por tamanho, peso, cor e textura, e explica o critério.","Ordena objetos do menor para o maior com segurança.","Percebe propriedades menos evidentes, como áspero e liso."],"P":["Compara por tamanho e por cor, e treina os demais critérios.","Começa a usar as palavras maior, menor e mais pesado.","Observa as propriedades dos objetos quando questionada."],"A":["É apoiada a observar uma propriedade de cada vez.","Recebe mediação nas situações de comparação.","Está sendo acompanhada na exploração das propriedades dos objetos."]}},{"cod":"EI03ET02","campo":"ET","curto":"Observação de mudanças nos materiais","texto":"Observar e descrever mudanças em diferentes materiais, resultantes de ações sobre eles, em experimentos envolvendo fenômenos naturais e artificiais.","frases":{"C":["Observa e descreve o que mudou no material depois da experiência.","Antecipa o que pode acontecer antes de realizar o experimento.","Relaciona causa e efeito nas transformações que observa."],"P":["Percebe a mudança e a descreve com apoio de perguntas.","Participa dos experimentos com interesse e curiosidade.","Começa a comparar o antes e o depois."],"A":["É convidada a observar o experimento junto ao professor.","Recebe mediação para descrever o que viu.","Está sendo acompanhada nas propostas de investigação."]}},{"cod":"EI03ET03","campo":"ET","curto":"Busca de informação sobre a natureza","texto":"Identificar e selecionar fontes de informações, para responder a questões sobre a natureza, seus fenômenos, sua conservação.","frases":{"C":["Busca informação em livros, imagens e na fala de adultos para tirar dúvidas.","Formula perguntas sobre os fenômenos que observa.","Relaciona o que aprendeu a atitudes de cuidado com a natureza."],"P":["Faz perguntas sobre a natureza e escuta as respostas com atenção.","Começa a procurar informação nas imagens dos livros.","Participa das rodas de investigação com interesse."],"A":["É incentivada a fazer perguntas sobre o que observa.","Recebe apoio para buscar informação junto com o professor.","Está sendo acompanhada nas propostas de observação da natureza."]}},{"cod":"EI03ET04","campo":"ET","curto":"Registro de observações e medidas","texto":"Registrar observações, manipulações e medidas, usando múltiplas linguagens (desenho, registro por números ou escrita espontânea), em diferentes suportes.","frases":{"C":["Registra o que observou por desenho, por número e por escrita espontânea.","Escolhe a forma de registrar de acordo com o que quer mostrar.","Compara os próprios registros feitos em momentos diferentes."],"P":["Registra por desenho e começa a acrescentar números.","Participa dos registros coletivos com contribuições próprias.","Representa o que observou com detalhes crescentes."],"A":["É apoiada a registrar por desenho o que observou.","Recebe mediação na hora do registro.","Está sendo acompanhada nas formas de registrar o que vive."]}},{"cod":"EI03ET05","campo":"ET","curto":"Classificação por semelhanças e diferenças","texto":"Classificar objetos e figuras de acordo com suas semelhanças e diferenças.","frases":{"C":["Classifica objetos por critério próprio e explica a regra que usou.","Reagrupa o mesmo conjunto usando um critério diferente.","Percebe quando um elemento não pertence ao grupo e justifica."],"P":["Agrupa por cor e por forma, e treina critérios mais abstratos.","Começa a explicar o motivo do agrupamento que fez.","Classifica corretamente quando o critério é dado pelo professor."],"A":["É apoiada a agrupar por uma característica de cada vez.","Recebe mediação nas atividades de classificação.","Está sendo acompanhada na organização de conjuntos."]}},{"cod":"EI03ET06","campo":"ET","curto":"História pessoal, familiar e da comunidade","texto":"Relatar fatos importantes sobre seu nascimento e desenvolvimento, a história dos seus familiares e da sua comunidade.","frases":{"C":["Conta fatos da própria história e da história da família com detalhes.","Compreende a passagem do tempo na própria vida, do bebê até hoje.","Relaciona acontecimentos da comunidade à história da própria família."],"P":["Conta fatos da própria vida com apoio de fotos e de objetos.","Começa a organizar os acontecimentos em ordem de tempo.","Fala da família com prazer quando é convidada."],"A":["É apoiada a relatar fatos com perguntas dirigidas.","Recebe mediação para organizar a linha do tempo pessoal.","Está sendo acompanhada no reconhecimento da própria história."]}},{"cod":"EI03ET07","campo":"ET","curto":"Relação entre número e quantidade","texto":"Relacionar números às suas respectivas quantidades e identificar o antes, o depois e o entre em uma sequência.","frases":{"C":["Relaciona o número à quantidade correspondente até vinte.","Identifica o que vem antes, depois e entre na sequência numérica.","Conta por correspondência um a um, sem repetir nem pular."],"P":["Conta com segurança até dez e amplia a contagem aos poucos.","Relaciona número e quantidade até cinco, e treina os demais.","Começa a perceber a ordem dos números na sequência."],"A":["É apoiada na contagem, apontando cada objeto.","Recebe mediação para relacionar o número à quantidade.","Está sendo acompanhada na construção da noção de número."]}},{"cod":"EI03ET08","campo":"ET","curto":"Medidas e gráficos básicos","texto":"Expressar medidas (peso, altura etc.), construindo gráficos básicos.","frases":{"C":["Mede e compara usando o próprio corpo e objetos como referência.","Lê e preenche gráficos simples construídos pela turma.","Registra medidas por número e por desenho."],"P":["Compara alturas e pesos e começa a registrar o resultado.","Participa da construção do gráfico da turma.","Usa palavras de medida como alto, baixo, pesado e leve."],"A":["É apoiada a comparar tamanhos colocando os objetos lado a lado.","Recebe mediação nas atividades de medida.","Está sendo acompanhada na construção da noção de medida."]}},{"cod":"EI03TS01","campo":"TS","curto":"Exploração de sons e instrumentos","texto":"Utilizar sons produzidos por materiais, objetos e instrumentos musicais durante brincadeiras de faz de conta, encenações, criações musicais, festas.","frases":{"C":["Explora sons de objetos e instrumentos e os usa nas próprias criações.","Reconhece o som de vários instrumentos e os nomeia.","Cria acompanhamentos rítmicos para as músicas da turma."],"P":["Experimenta os instrumentos disponíveis com interesse.","Começa a diferenciar os sons que cada material produz.","Participa das brincadeiras sonoras acompanhando o grupo."],"A":["É convidada a explorar os instrumentos com apoio do professor.","Observa antes de participar das propostas sonoras.","Está sendo acompanhada na exploração de sons."]}},{"cod":"EI03TS02","campo":"TS","curto":"Desenho, pintura, colagem e modelagem","texto":"Expressar-se livremente por meio de desenho, pintura, colagem, dobradura e escultura, criando produções bidimensionais e tridimensionais.","frases":{"C":["Expressa-se com liberdade no desenho, na pintura e na modelagem.","Escolhe os materiais de acordo com o que quer representar.","Produz desenhos detalhados e conta a história por trás deles."],"P":["Amplia o repertório de formas e cores nas próprias produções.","Experimenta técnicas novas quando são apresentadas.","Começa a dar intenção ao desenho, antes apenas exploratório."],"A":["É incentivada a experimentar diferentes materiais.","Recebe apoio para permanecer na atividade de arte até concluir.","Está sendo acompanhada na exploração de técnicas variadas."]}},{"cod":"EI03TS03","campo":"TS","curto":"Qualidades do som: intensidade, duração, altura e timbre","texto":"Reconhecer as qualidades do som (intensidade, duração, altura e timbre), utilizando-as em suas produções sonoras e ao ouvir músicas e sons.","frases":{"C":["Diferencia som forte de fraco, longo de curto, grave de agudo.","Usa as variações de som nas próprias produções musicais.","Percebe mudanças de ritmo e ajusta o movimento a elas."],"P":["Identifica som forte e fraco e treina duração e altura.","Começa a perceber quando a música fica mais rápida ou mais lenta.","Acompanha o ritmo do grupo na maior parte do tempo."],"A":["É apoiada a perceber as diferenças entre os sons.","Participa das propostas musicais com mediação.","Está sendo acompanhada no reconhecimento das qualidades do som."]}}],"folhas":[{"n":1,"titulo":"ESTE SOU EU","enunciado":"Desenhe você da cabeça aos pés. Depois pinte do jeito que você é.","bncc":"EI03EO05","campo":"EO","dica":"Comente que cada corpo é diferente e que todos são bonitos do seu jeito."},{"n":2,"titulo":"MEU NOME","enunciado":"Escreva o seu nome nos quadrinhos e depois nas linhas.","bncc":"EI03EO02","campo":"EO","dica":"Deixe o crachá com o nome da criança a vista para ela consultar."},{"n":3,"titulo":"MINHA FAMÍLIA","enunciado":"Desenhe as pessoas que moram com você.","bncc":"EI03EO06","campo":"EO","dica":"Acolha todos os arranjos familiares sem corrigir a composição da criança."},{"n":4,"titulo":"COMO EU ME SINTO","enunciado":"Desenhe um rosto em cada quadro, do jeito que você imagina.","bncc":"EI03EO01","campo":"EO","dica":"Pergunte o que costuma deixar a criança com cada um desses sentimentos."},{"n":5,"titulo":"DE QUE EU GOSTO","enunciado":"Marque um X na coluna que combina com você.","bncc":"EI03EO04","campo":"EO","dica":"Compare as respostas da turma: é uma boa entrada para falar de diferença."},{"n":6,"titulo":"O QUE EU JÁ FAÇO SOZINHO","enunciado":"Marque um X no que você já consegue fazer sem ajuda.","bncc":"EI03EO02","campo":"EO","dica":"Valorize o que já foi conquistado antes de falar do que falta."},{"n":7,"titulo":"EU CUIDO DE MIM","enunciado":"Pinte tudo o que você usa para cuidar do seu corpo.","bncc":"EI03CG04","campo":"CG","dica":"Duas figuras não servem para o autocuidado: peça que a criança explique."},{"n":8,"titulo":"MEUS AMIGOS","enunciado":"Desenhe você brincando com um amigo da sua turma.","bncc":"EI03EO03","campo":"EO","dica":"Pergunte o nome do amigo desenhado e registre a fala da criança."},{"n":9,"titulo":"COMBINADOS DA TURMA","enunciado":"Marque um X no combinado que você já cumpre.","bncc":"EI03EO07","campo":"EO","dica":"Construa os combinados com a turma antes de entregar a folha."},{"n":10,"titulo":"QUANDO ALGUÉM PRECISA DE AJUDA","enunciado":"Desenhe uma situação em que você ajudou alguém.","bncc":"EI03EO01","campo":"EO","dica":"Nomeie o sentimento envolvido em cada cena que a criança contar."},{"n":11,"titulo":"CADA UM DE UM JEITO","enunciado":"Desenhe dois colegas da sua turma. Mostre o que eles têm de diferente.","bncc":"EI03EO05","campo":"EO","dica":"Aproveite para conversar sobre cabelo, altura e cor da pele sem hierarquia."},{"n":12,"titulo":"EU CRESCI","enunciado":"Numere os quadros de 1 a 4 e desenhe você em cada fase.","bncc":"EI03EO02","campo":"EO","dica":"Peça que a família envie uma foto antiga para enriquecer a conversa."},{"n":13,"titulo":"MINHA CASA","enunciado":"Desenhe a sua casa e o lugar de que você mais gosta nela.","bncc":"EI03EO06","campo":"EO","dica":"Registre por escrito o que a criança contar sobre o desenho."},{"n":14,"titulo":"MINHA ESCOLA","enunciado":"Desenhe o lugar da escola de que você mais gosta.","bncc":"EI03EO03","campo":"EO","dica":"Faça antes um passeio pela escola observando os espaços."},{"n":15,"titulo":"O QUE ME DEIXA FELIZ","enunciado":"Desenhe duas coisas que deixam você feliz.","bncc":"EI03EO04","campo":"EO","dica":"Encerre com uma roda em que cada criança mostra o próprio desenho."},{"n":16,"titulo":"APRENDENDO A DIVIDIR","enunciado":"Numere os quadros de 1 a 4 contando uma história sobre dividir.","bncc":"EI03EO07","campo":"EO","dica":"Leia antes uma história curta sobre partilha e retome os personagens."},{"n":17,"titulo":"PEDIR E AGRADECER","enunciado":"Desenhe uma cena em que você pediu algo e outra em que agradeceu.","bncc":"EI03EO07","campo":"EO","dica":"Modele as falas em voz alta durante a rotina, não só na folha."},{"n":18,"titulo":"FESTAS QUE EU CONHECO","enunciado":"Pinte as figuras que aparecem nas festas da sua comunidade.","bncc":"EI03EO06","campo":"EO","dica":"Pergunte quais festas a família da criança costuma celebrar."},{"n":19,"titulo":"COMO EU CONVIVO","enunciado":"Marque um X na coluna que combina com você nesta semana.","bncc":"EI03EO03","campo":"EO","dica":"Use a folha na sexta-feira, fechando a semana com a turma."},{"n":20,"titulo":"MEU RETRATO DO ANO","enunciado":"Desenhe você hoje. Guarde esta folha na sua pasta.","bncc":"EI03EO02","campo":"EO","dica":"Compare com a folha 1 no fim do ano: a diferença surpreende a criança."},{"n":21,"titulo":"CAMINHOS RETOS E ONDULADOS","enunciado":"Cubra cada caminho com o lápis, sem tirar a mão do papel.","bncc":"EI03CG05","campo":"CG","dica":"Peça que a criança percorra o caminho com o dedo antes do lápis."},{"n":22,"titulo":"CAMINHOS EM ZIGUEZAGUE","enunciado":"Cubra os caminhos com o lápis, do ponto até a figura.","bncc":"EI03CG05","campo":"CG","dica":"Traço anguloso exige mais controle: aceite tentativas imperfeitas."},{"n":23,"titulo":"CAMINHOS COM LAÇOS","enunciado":"Cubra cada caminho sem levantar o lápis do papel.","bncc":"EI03CG05","campo":"CG","dica":"O movimento contínuo prepara a mão para a letra cursiva mais adiante."},{"n":24,"titulo":"TODOS OS CAMINHOS","enunciado":"Cubra os cinco caminhos até chegar na figura.","bncc":"EI03CG05","campo":"CG","dica":"Observe a preensão do lápis: o ideal é a pinça com três dedos."},{"n":25,"titulo":"ESPIRAIS","enunciado":"Comece na bolinha do meio e vá cobrindo a espiral até o fim.","bncc":"EI03CG05","campo":"CG","dica":"A espiral trabalha o giro do punho, movimento da letra e do número."},{"n":26,"titulo":"LABIRINTO DO GATO","enunciado":"Passe o lápis pelo caminho até o gato chegar em casa.","bncc":"EI03CG05","campo":"CG","dica":"Este é o labirinto mais fácil do pack. Comece por ele."},{"n":27,"titulo":"LABIRINTO DO PEIXE","enunciado":"Ajude o peixe a encontrar o caminho até a ilha.","bncc":"EI03CG05","campo":"CG","dica":"Se a criança errar o caminho, deixe voltar sem apagar o traço."},{"n":28,"titulo":"LABIRINTO DA ABELHA","enunciado":"Leve a abelha até a flor passando pelo caminho certo.","bncc":"EI03CG05","campo":"CG","dica":"Labirinto médio. Deixe que a criança tente sozinha antes de ajudar."},{"n":29,"titulo":"LABIRINTO DA TARTARUGA","enunciado":"Ajude a tartaruga a chegar até a árvore.","bncc":"EI03CG05","campo":"CG","dica":"O mais difícil do pack. Guarde para o segundo semestre."},{"n":30,"titulo":"LIGUE OS PONTOS: ESTRELA","enunciado":"Ligue os pontos do 1 até o último número e descubra a figura.","bncc":"EI03CG05","campo":"CG","dica":"Conte os números em voz alta junto com a criança."},{"n":31,"titulo":"LIGUE OS PONTOS: CASA","enunciado":"Ligue os pontos na ordem dos números e depois pinte.","bncc":"EI03CG05","campo":"CG","dica":"Atividade que une contagem e coordenação motora fina."},{"n":32,"titulo":"LIGUE OS PONTOS: PEIXE","enunciado":"Ligue os pontos na ordem e descubra quem mora na água.","bncc":"EI03CG05","campo":"CG","dica":"Depois de pronto, peça que a criança invente um nome para a figura."},{"n":33,"titulo":"LIGUE OS PONTOS: BARCO","enunciado":"Ligue os pontos na ordem dos números.","bncc":"EI03CG05","campo":"CG","dica":"Figura com mais pontos: apoie a criança na virada de dezena."},{"n":34,"titulo":"RECORTE NAS LINHAS","enunciado":"Recorte em cima de cada linha tracejada.","bncc":"EI03CG05","campo":"CG","dica":"Tesoura sem ponta e supervisão direta. Comece pelas linhas retas."},{"n":35,"titulo":"PINTE SEM SAIR DA LINHA","enunciado":"Pinte cada figura inteira, sem passar do contorno.","bncc":"EI03CG05","campo":"CG","dica":"Figuras grandes de propósito, para a criança controlar o movimento."},{"n":36,"titulo":"MEU CORPO SE MEXE","enunciado":"Marque um X no que você já consegue fazer com o seu corpo.","bncc":"EI03CG02","campo":"CG","dica":"Preencha depois de um circuito motor no pátio, não antes."},{"n":37,"titulo":"EU IMITO","enunciado":"Desenhe você fazendo os gestos que a professora pedir.","bncc":"EI03CG03","campo":"CG","dica":"Faça primeiro a brincadeira de mímica com a turma toda."},{"n":38,"titulo":"A ORDEM DA HIGIENE","enunciado":"Numere os quadros de 1 a 4 na ordem certa e desenhe cada etapa.","bncc":"EI03CG04","campo":"CG","dica":"Combine com a rotina real de escovação da escola."},{"n":39,"titulo":"MINHAS MÃOS","enunciado":"Contorne a sua mão no quadro e pinte cada dedo de um jeito.","bncc":"EI03CG05","campo":"CG","dica":"Ajude a segurar o lápis na vertical para contornar sem escorregar."},{"n":40,"titulo":"CIRCUITO DO PÁTIO","enunciado":"Siga o circuito com a professora e depois pinte o que você fez.","bncc":"EI03CG02","campo":"CG","dica":"Monte o circuito com cones, cordas e bambolê antes de entregar a folha."},{"n":41,"titulo":"AS FORMAS QUE EU CONHECO","enunciado":"Pinte cada forma de um jeito diferente e diga o nome de cada uma.","bncc":"EI03TS02","campo":"TS","dica":"Tenha as formas recortadas em EVA para a criança manipular antes."},{"n":42,"titulo":"O CÍRCULO","enunciado":"Cubra os círculos pontilhados e pinte as figuras redondas.","bncc":"EI03TS02","campo":"TS","dica":"Peça que a criança procure círculos pela sala depois da folha."},{"n":43,"titulo":"O QUADRADO","enunciado":"Cubra os quadrados pontilhados e pinte as figuras com quatro lados iguais.","bncc":"EI03TS02","campo":"TS","dica":"Conte os lados junto com a criança, apontando um por um."},{"n":44,"titulo":"O TRIÂNGULO","enunciado":"Cubra os triângulos pontilhados e pinte as figuras com três lados.","bncc":"EI03TS02","campo":"TS","dica":"Três lados e três bicos: deixe a criança conferir com o dedo."},{"n":45,"titulo":"O RETÂNGULO","enunciado":"Cubra os retângulos pontilhados e pinte as figuras parecidas.","bncc":"EI03TS02","campo":"TS","dica":"Compare com o quadrado: dois lados compridos e dois curtos."},{"n":46,"titulo":"O LOSANGO","enunciado":"Cubra os losangos pontilhados e pinte o que tem essa forma.","bncc":"EI03TS02","campo":"TS","dica":"O losango costuma ser a forma mais difícil: vá devagar."},{"n":47,"titulo":"PINTE COMO A LEGENDA","enunciado":"Olhe o número embaixo de cada figura e pinte com a cor da legenda.","bncc":"EI03TS02","campo":"TS","dica":"Confira se a criança localiza o número antes de escolher a cor."},{"n":48,"titulo":"COMPLETE A BORBOLETA","enunciado":"Desenhe do outro lado do tracejado, igualzinho.","bncc":"EI03TS02","campo":"TS","dica":"Dobre a folha na linha tracejada para a criança perceber a simetria."},{"n":49,"titulo":"COMPLETE A CASA","enunciado":"Desenhe a outra metade da casa, do mesmo tamanho.","bncc":"EI03TS02","campo":"TS","dica":"Use os quadradinhos como referência: conte quantos de cada lado."},{"n":50,"titulo":"COMPLETE A ÁRVORE","enunciado":"Complete a árvore do outro lado da linha.","bncc":"EI03TS02","campo":"TS","dica":"Formas orgânicas são mais difíceis que as retas: aceite aproximações."},{"n":51,"titulo":"SEQUÊNCIA DE FORMAS","enunciado":"Descubra a ordem e desenhe o que vem nos quadros vazios.","bncc":"EI03TS02","campo":"TS","dica":"Peça que a criança diga a regra em voz alta antes de desenhar."},{"n":52,"titulo":"SEQUÊNCIA DE FIGURAS","enunciado":"Continue a sequência desenhando nos quadros vazios.","bncc":"EI03TS02","campo":"TS","dica":"Sequência com repetição dupla é mais difícil: apoie na terceira linha."},{"n":53,"titulo":"COLAGEM DE FORMAS","enunciado":"Recorte as formas e cole cada uma no grupo certo.","bncc":"EI03TS02","campo":"TS","dica":"A distinção entre reto e curvo vem antes do nome de cada forma."},{"n":54,"titulo":"MOSAICO PARA PINTAR","enunciado":"Pinte o mosaico do jeito que você quiser.","bncc":"EI03TS02","campo":"TS","dica":"Sugira pintar todas as figuras iguais da mesma cor e observar o padrão."},{"n":55,"titulo":"DESENHO COM FORMAS","enunciado":"Use só círculos, quadrados e triângulos para fazer um desenho.","bncc":"EI03TS02","campo":"TS","dica":"Mostre um exemplo no quadro: casa feita de quadrado mais triângulo."},{"n":56,"titulo":"SONS FORTES E SONS FRACOS","enunciado":"Ouça cada som e marque um X na coluna certa.","bncc":"EI03TS03","campo":"TS","dica":"Produza cada som na frente da turma antes de marcar."},{"n":57,"titulo":"SONS LONGOS E SONS CURTOS","enunciado":"Ouça cada som e marque se ele durou muito ou pouco.","bncc":"EI03TS03","campo":"TS","dica":"Duração do som é um dos critérios da BNCC para o campo dos sons."},{"n":58,"titulo":"O QUE FAZ ESSE SOM","enunciado":"Ligue cada figura ao som que ela faz.","bncc":"EI03TS01","campo":"TS","dica":"Faça a imitação dos sons com a turma antes de ligar."},{"n":59,"titulo":"DESENHE A MÚSICA","enunciado":"Ouça a música e desenhe o que você imaginou.","bncc":"EI03TS01","campo":"TS","dica":"Escolha duas músicas bem contrastantes e toque cada uma por um minuto."},{"n":60,"titulo":"MEU QUADRO","enunciado":"Faça um desenho livre dentro da moldura e escreva o título.","bncc":"EI03TS02","campo":"TS","dica":"Exponha os quadros da turma em um varal: valorize a produção."},{"n":61,"titulo":"A LETRA A","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":62,"titulo":"A LETRA B","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":63,"titulo":"A LETRA C","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":64,"titulo":"A LETRA D","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":65,"titulo":"A LETRA E","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":66,"titulo":"A LETRA F","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":67,"titulo":"A LETRA G","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":68,"titulo":"A LETRA H","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":69,"titulo":"A LETRA I","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":70,"titulo":"A LETRA J","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":71,"titulo":"A LETRA K","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":72,"titulo":"A LETRA L","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":73,"titulo":"A LETRA M","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":74,"titulo":"A LETRA N","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":75,"titulo":"A LETRA O","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":76,"titulo":"A LETRA P","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":77,"titulo":"A LETRA Q","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":78,"titulo":"A LETRA R","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":79,"titulo":"A LETRA S","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":80,"titulo":"A LETRA T","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":81,"titulo":"A LETRA U","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":82,"titulo":"A LETRA V","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":83,"titulo":"A LETRA W","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":84,"titulo":"A LETRA X","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":85,"titulo":"A LETRA Y","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":86,"titulo":"A LETRA Z","enunciado":"Cubra as letras, leia a palavra e pinte a figura.","bncc":"EI03EF09","campo":"EF","dica":"Diga o som da letra, não só o nome dela, antes de começar a cobrir."},{"n":87,"titulo":"AS VOGAIS","enunciado":"Cubra as cinco vogais e pinte a figura que começa com cada uma.","bncc":"EI03EF09","campo":"EF","dica":"As vogais aparecem em toda palavra: é por elas que a escrita começa."},{"n":88,"titulo":"O MEU NOME EM LETRAS","enunciado":"Escreva o seu nome e depois conte quantas letras ele tem.","bncc":"EI03EF09","campo":"EF","dica":"O nome próprio é a primeira palavra estável que a criança escreve."},{"n":89,"titulo":"PALAVRAS QUE RIMAM","enunciado":"Ligue as figuras cujos nomes terminam com o mesmo som.","bncc":"EI03EF02","campo":"EF","dica":"Fale as duas palavras devagar e alongue a última sílaba."},{"n":90,"titulo":"CONTE A HISTÓRIA","enunciado":"Numere os quadros de 1 a 4 e desenhe a história que a professora leu.","bncc":"EI03EF04","campo":"EF","dica":"Leia a mesma história duas vezes antes de pedir o reconto."},{"n":91,"titulo":"O NÚMERO 0","enunciado":"Cubra o número zero e descubra o grupo que não tem nenhum.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":92,"titulo":"O NÚMERO 1","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":93,"titulo":"O NÚMERO 2","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":94,"titulo":"O NÚMERO 3","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":95,"titulo":"O NÚMERO 4","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":96,"titulo":"O NÚMERO 5","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":97,"titulo":"O NÚMERO 6","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":98,"titulo":"O NÚMERO 7","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":99,"titulo":"O NÚMERO 8","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":100,"titulo":"O NÚMERO 9","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":101,"titulo":"O NÚMERO 10","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":102,"titulo":"O NÚMERO 11","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":103,"titulo":"O NÚMERO 12","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":104,"titulo":"O NÚMERO 13","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":105,"titulo":"O NÚMERO 14","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":106,"titulo":"O NÚMERO 15","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":107,"titulo":"O NÚMERO 16","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":108,"titulo":"O NÚMERO 17","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":109,"titulo":"O NÚMERO 18","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":110,"titulo":"O NÚMERO 19","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":111,"titulo":"O NÚMERO 20","enunciado":"Cubra o número, conte as bolinhas e desenhe a quantidade certa.","bncc":"EI03ET07","campo":"ET","dica":"Conte apontando cada objeto uma única vez, em voz alta, com a criança."},{"n":112,"titulo":"QUANTOS SÃO","enunciado":"Conte as figuras de cada linha e escreva o número no quadrado.","bncc":"EI03ET07","campo":"ET","dica":"Se a criança errar, peça que conte de novo tocando em cada figura."},{"n":113,"titulo":"LIGUE A QUANTIDADE","enunciado":"Ligue cada grupo de bolinhas ao número certo.","bncc":"EI03ET07","campo":"ET","dica":"Relacionar número e quantidade é o coração do objetivo EI03ET07."},{"n":114,"titulo":"ONDE TEM MAIS","enunciado":"Circule o grupo que tem mais figuras em cada linha.","bncc":"EI03ET01","campo":"ET","dica":"Antes de contar, pergunte qual grupo parece maior só de olhar."},{"n":115,"titulo":"ANTES, DEPOIS E ENTRE","enunciado":"Escreva o número que falta em cada quadrinho vazio.","bncc":"EI03ET07","campo":"ET","dica":"Use a reta numérica da parede como apoio se a criança travar."},{"n":116,"titulo":"SEPARE EM GRUPOS","enunciado":"Ligue cada figura ao grupo a que ela pertence.","bncc":"EI03ET05","campo":"ET","dica":"Classificar exige achar o critério comum, não só o nome da figura."},{"n":117,"titulo":"GRANDE E PEQUENO","enunciado":"Recorte as figuras e cole cada uma no lugar certo.","bncc":"EI03ET01","campo":"ET","dica":"Tesoura sem ponta. Grandeza aqui é do objeto real, não do desenho."},{"n":118,"titulo":"O GRÁFICO DA TURMA","enunciado":"Pinte um quadradinho para cada colega que escolheu a figura.","bncc":"EI03ET08","campo":"ET","dica":"Faça a votação com a turma e preencha o gráfico coletivamente."},{"n":119,"titulo":"DIA E NOITE","enunciado":"Ligue cada figura ao momento do dia em que ela aparece.","bncc":"EI03ET02","campo":"ET","dica":"Converse sobre a rotina da criança de manhã e à noite."},{"n":120,"titulo":"O TEMPO PASSA","enunciado":"Numere os quadros de 1 a 4 na ordem do dia e desenhe cada momento.","bncc":"EI03ET06","campo":"ET","dica":"A noção de sequência temporal se constrói falando da rotina real."}]}</script>
+<script>
+(function () {
+  "use strict";
+
+  var D = JSON.parse(document.getElementById("dados").textContent);
+  var CHAVE = "app-professor-v1";
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ---------------------------------------------------------------- estado
+  // { turmas: [{id, nome, criancas:[{id, nome, marcas:{cod:"C"}}]}],
+  //   semente: n, periodo: "", reuniao: {...} }
+  var estado = carregar();
+
+  function carregar() {
+    try {
+      var s = JSON.parse(localStorage.getItem(CHAVE));
+      if (s && s.turmas) { return s; }
+    } catch (e) { /* aparelho sem localStorage ou dado corrompido */ }
+    return { turmas: [], semente: 1, periodo: "" };
+  }
+
+  function salvar() {
+    try { localStorage.setItem(CHAVE, JSON.stringify(estado)); }
+    catch (e) { /* modo privado: o app segue funcionando nesta sessao */ }
+  }
+
+  function id() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  // sorteio estavel: a mesma crianca recebe sempre a mesma frase, ate a
+  // professora pedir para trocar. sem isto, o texto mudava a cada toque.
+  function digito(txt) {
+    var h = 5381, i;
+    for (i = 0; i < txt.length; i++) { h = ((h << 5) + h + txt.charCodeAt(i)) | 0; }
+    return Math.abs(h);
+  }
+
+  // ------------------------------------------------------------------ abas
+  var abas = ["parecer", "reuniao", "plano"];
+  abas.forEach(function (nome) {
+    $("t-" + nome).addEventListener("click", function () {
+      abas.forEach(function (outro) {
+        var sel = outro === nome;
+        $("t-" + outro).setAttribute("aria-selected", sel ? "true" : "false");
+        $("p-" + outro).hidden = !sel;
+      });
+      window.scrollTo(0, 0);
+    });
+  });
+
+  // =================================================================
+  // PARECER
+  // =================================================================
+  var turmaAtual = null, criancaAtual = null;
+
+  function telasParecer(qual) {
+    $("parecer-turmas").hidden = qual !== "turmas";
+    $("parecer-criancas").hidden = qual !== "criancas";
+    $("parecer-crianca").hidden = qual !== "crianca";
+    window.scrollTo(0, 0);
+  }
+
+  function marcadas(cr) { return Object.keys(cr.marcas || {}).length; }
+
+  function pintarTurmas() {
+    var ul = $("lista-turmas");
+    ul.innerHTML = "";
+    if (!estado.turmas.length) {
+      ul.innerHTML = '<li class="vazio">Nenhuma turma ainda.</li>';
+      return;
+    }
+    estado.turmas.forEach(function (t) {
+      var prontas = t.criancas.filter(function (c) { return marcadas(c) > 0; }).length;
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.className = "item";
+      b.innerHTML = '<b></b><span class="selo' + (prontas === t.criancas.length && prontas ? " ok" : "") +
+        '">' + prontas + " de " + t.criancas.length + '</span><span class="seta">&rsaquo;</span>';
+      b.querySelector("b").textContent = t.nome;
+      b.addEventListener("click", function () { abrirTurma(t.id); });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+  }
+
+  function abrirTurma(tid) {
+    turmaAtual = estado.turmas.filter(function (t) { return t.id === tid; })[0];
+    if (!turmaAtual) { return; }
+    $("nome-turma").textContent = turmaAtual.nome;
+    var prontas = turmaAtual.criancas.filter(function (c) { return marcadas(c) > 0; }).length;
+    $("resumo-turma").textContent = prontas + " de " + turmaAtual.criancas.length + " com parecer começado.";
+    var ul = $("lista-criancas");
+    ul.innerHTML = "";
+    turmaAtual.criancas.forEach(function (cr) {
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.className = "item";
+      var n = marcadas(cr);
+      b.innerHTML = '<b></b><span class="selo' + (n ? " ok" : "") + '">' +
+        (n ? n + " marcados" : "falta") + '</span><span class="seta">&rsaquo;</span>';
+      b.querySelector("b").textContent = cr.nome;
+      b.addEventListener("click", function () { abrirCrianca(cr.id); });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    telasParecer("criancas");
+  }
+
+  function abrirCrianca(cid) {
+    criancaAtual = turmaAtual.criancas.filter(function (c) { return c.id === cid; })[0];
+    if (!criancaAtual) { return; }
+    $("nome-crianca").textContent = criancaAtual.nome;
+    var caixa = $("objetivos");
+    caixa.innerHTML = "";
+    Object.keys(D.campos).forEach(function (sig) {
+      var doCampo = D.objetivos.filter(function (o) { return o.campo === sig; });
+      if (!doCampo.length) { return; }
+      var h = document.createElement("p");
+      h.className = "campo-titulo";
+      h.textContent = D.campos[sig];
+      caixa.appendChild(h);
+      doCampo.forEach(function (obj) {
+        caixa.appendChild(linhaObjetivo(obj));
+      });
+    });
+    telasParecer("crianca");
+    gerarParecer();
+  }
+
+  function linhaObjetivo(obj) {
+    var div = document.createElement("div");
+    div.className = "objetivo";
+    var cod = document.createElement("p");
+    cod.className = "cod";
+    cod.textContent = obj.cod;
+    var curto = document.createElement("p");
+    curto.className = "curto";
+    curto.textContent = obj.curto;
+    var niveis = document.createElement("div");
+    niveis.className = "niveis";
+    D.niveis.forEach(function (n) {
+      var b = document.createElement("button");
+      b.className = "nivel";
+      b.dataset.n = n.sigla;
+      b.type = "button";
+      b.innerHTML = n.sigla + "<small></small>";
+      b.querySelector("small").textContent = n.nome.toLowerCase();
+      b.setAttribute("aria-label", obj.curto + ": " + n.nome.toLowerCase());
+      b.setAttribute("aria-pressed",
+        (criancaAtual.marcas || {})[obj.cod] === n.sigla ? "true" : "false");
+      b.addEventListener("click", function () {
+        criancaAtual.marcas = criancaAtual.marcas || {};
+        if (criancaAtual.marcas[obj.cod] === n.sigla) {
+          delete criancaAtual.marcas[obj.cod];          // tocar de novo desmarca
+        } else {
+          criancaAtual.marcas[obj.cod] = n.sigla;
+        }
+        Array.prototype.forEach.call(niveis.children, function (outro) {
+          outro.setAttribute("aria-pressed",
+            criancaAtual.marcas[obj.cod] === outro.dataset.n ? "true" : "false");
+        });
+        salvar();
+        gerarParecer();
+      });
+      niveis.appendChild(b);
+    });
+    div.appendChild(cod);
+    div.appendChild(curto);
+    div.appendChild(niveis);
+    return div;
+  }
+
+  function gerarParecer() {
+    if (!criancaAtual) { return; }
+    var marcas = criancaAtual.marcas || {};
+    var codigos = Object.keys(marcas);
+    var alvo = $("saida-parecer");
+    if (!codigos.length) {
+      alvo.textContent = "Marque os objetivos acima para o texto aparecer aqui.";
+      return;
+    }
+    var periodo = $("periodo").value.trim();
+    var partes = [];
+    partes.push(criancaAtual.nome + (turmaAtual ? ", " + turmaAtual.nome : "") +
+                (periodo ? ", " + periodo : "") + ".");
+
+    Object.keys(D.campos).forEach(function (sig) {
+      var frases = [];
+      D.objetivos.forEach(function (obj) {
+        if (obj.campo !== sig || !marcas[obj.cod]) { return; }
+        var lista = obj.frases[marcas[obj.cod]];
+        var k = digito(criancaAtual.nome + obj.cod + estado.semente) % lista.length;
+        frases.push(lista[k]);
+      });
+      if (frases.length) {
+        partes.push("");
+        partes.push(D.campos[sig].toUpperCase());
+        partes.push(frases.join(" "));
+      }
+    });
+
+    var obs = $("observacao").value.trim();
+    if (obs) { partes.push(""); partes.push(obs); }
+    alvo.textContent = partes.join("\n");
+  }
+
+  $("criar-turma").addEventListener("click", function () {
+    var nome = $("nova-turma").value.trim();
+    var nomes = $("novos-nomes").value.split("\n")
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length; });
+    if (!nome) { alerta($("nova-turma"), "Dê um nome à turma."); return; }
+    if (!nomes.length) { alerta($("novos-nomes"), "Digite ao menos um nome."); return; }
+    estado.turmas.push({
+      id: id(), nome: nome,
+      criancas: nomes.map(function (n) { return { id: id(), nome: n, marcas: {} }; })
+    });
+    $("nova-turma").value = "";
+    $("novos-nomes").value = "";
+    salvar();
+    pintarTurmas();
+    pintarSeletores();
+  });
+
+  function alerta(campo, msg) {
+    var anterior = campo.parentNode.querySelector(".erro");
+    if (anterior) { anterior.remove(); }
+    var p = document.createElement("p");
+    p.className = "erro";
+    p.style.cssText = "color:var(--vermelho);font-weight:700;font-size:.86rem;margin-top:6px";
+    p.textContent = msg;
+    campo.parentNode.insertBefore(p, campo.nextSibling);
+    campo.focus();
+    campo.addEventListener("input", function limpar() {
+      p.remove();
+      campo.removeEventListener("input", limpar);
+    });
+  }
+
+  $("voltar-turmas").addEventListener("click", function () { pintarTurmas(); telasParecer("turmas"); });
+  $("voltar-criancas").addEventListener("click", function () { abrirTurma(turmaAtual.id); });
+  $("periodo").addEventListener("input", function () {
+    estado.periodo = $("periodo").value; salvar(); gerarParecer();
+  });
+  $("observacao").addEventListener("input", gerarParecer);
+  $("sortear-parecer").addEventListener("click", function () {
+    estado.semente = (estado.semente || 1) + 1; salvar(); gerarParecer();
+  });
+  $("apagar-turma").addEventListener("click", function () {
+    if (!turmaAtual) { return; }
+    if (!window.confirm("Apagar a turma " + turmaAtual.nome + " e todos os pareceres dela?")) { return; }
+    estado.turmas = estado.turmas.filter(function (t) { return t.id !== turmaAtual.id; });
+    salvar(); pintarTurmas(); pintarSeletores(); telasParecer("turmas");
+  });
+
+  // =================================================================
+  // REUNIÃO DE PAIS
+  // =================================================================
+  var ASSUNTOS = [
+    "Como foi o período para a turma",
+    "O que a turma já conquistou",
+    "Rotina da sala e horários",
+    "Entrega dos pareceres descritivos",
+    "Material que a criança precisa trazer",
+    "Combinados sobre lanche e alimentação",
+    "Adaptação e choro na entrada",
+    "Uso de telas em casa",
+    "Leitura em casa: como ajudar",
+    "Datas e eventos do próximo período",
+    "Conversas individuais ao final"
+  ];
+
+  function pintarAssuntos() {
+    var caixa = $("assuntos");
+    ASSUNTOS.forEach(function (txt, i) {
+      var l = document.createElement("label");
+      l.className = "assunto";
+      var c = document.createElement("input");
+      c.type = "checkbox";
+      c.value = txt;
+      if (i < 4) { c.checked = true; }
+      c.addEventListener("change", gerarReuniao);
+      var s = document.createElement("span");
+      s.textContent = txt;
+      l.appendChild(c);
+      l.appendChild(s);
+      caixa.appendChild(l);
+    });
+  }
+
+  function dataBR(iso) {
+    if (!iso) { return ""; }
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+
+  function gerarReuniao() {
+    var escolhidos = Array.prototype.slice
+      .call($("assuntos").querySelectorAll("input:checked"))
+      .map(function (c) { return c.value; });
+    var alvo = $("saida-reuniao");
+    if (!escolhidos.length) { alvo.textContent = "Marque pelo menos um assunto."; return; }
+
+    var turma = turmaPorId($("r-turma").value);
+    var data = dataBR($("r-data").value);
+    var hora = $("r-hora").value;
+    var local = $("r-local").value.trim() || "Sala da turma";
+    var prof = $("r-prof").value.trim();
+
+    var t = [];
+    t.push("CONVITE PARA A REUNIÃO DE PAIS");
+    t.push("");
+    t.push("Prezada família,");
+    t.push("Convidamos você para a reunião da turma " + (turma ? turma.nome : "") +
+           ", no dia " + (data || "___/___/____") + ", às " + (hora || "__:__") +
+           ", em " + local + ". Sua presença faz diferença no que a gente constrói com a criança.");
+    if (prof) { t.push(""); t.push(prof); }
+    t.push("");
+    t.push("Assinatura do responsável: ______________________________");
+    t.push("");
+    t.push("");
+    t.push("PAUTA DA REUNIÃO");
+    t.push("Turma: " + (turma ? turma.nome : "") + "   Data: " + (data || "___/___/____") +
+           "   Horário: " + (hora || "__:__"));
+    t.push("");
+    escolhidos.forEach(function (a, i) { t.push((i + 1) + ". " + a); });
+    t.push("");
+    t.push("");
+    t.push("LISTA DE PRESENÇA");
+    t.push("Turma: " + (turma ? turma.nome : "") + "   Data: " + (data || "___/___/____"));
+    t.push("");
+    if (turma && turma.criancas.length) {
+      turma.criancas.forEach(function (cr, i) {
+        t.push(pad(i + 1) + ". " + cr.nome);
+        t.push("     Responsável: ______________________  Assinatura: ______________________");
+      });
+    } else {
+      t.push("Cadastre a turma na aba Parecer para a lista sair com os nomes.");
+    }
+    alvo.textContent = t.join("\n");
+  }
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+  // =================================================================
+  // PLANO DA SEMANA
+  // =================================================================
+  // a rotina do guia do pack: um campo de experiência por dia
+  var DIAS = [
+    { sigla: "SEG", nome: "segunda", campo: "EO" },
+    { sigla: "TER", nome: "terça", campo: "EF" },
+    { sigla: "QUA", nome: "quarta", campo: "ET" },
+    { sigla: "QUI", nome: "quinta", campo: "CG" },
+    { sigla: "SEX", nome: "sexta", campo: "TS" }
+  ];
+  var escolhidas = {};      // sigla do dia -> numero da folha
+
+  function folhasDoCampo(sig) {
+    return D.folhas.filter(function (f) { return f.campo === sig; });
+  }
+
+  function sortearDia(d, forcar) {
+    var lista = folhasDoCampo(d.campo);
+    if (!lista.length) { escolhidas[d.sigla] = null; return; }
+    var usadas = Object.keys(escolhidas).map(function (k) { return escolhidas[k]; });
+    var livres = lista.filter(function (f) { return usadas.indexOf(f.n) < 0; });
+    var pool = livres.length ? livres : lista;
+    var base = digito(d.sigla + d.campo + ($("pl-data").value || "") + (estado.semente || 1) + (forcar || ""));
+    escolhidas[d.sigla] = pool[base % pool.length].n;
+  }
+
+  function folhaPorNumero(n) {
+    return D.folhas.filter(function (f) { return f.n === n; })[0] || null;
+  }
+
+  function pintarDias() {
+    var caixa = $("dias");
+    caixa.innerHTML = "";
+    DIAS.forEach(function (d) {
+      var div = document.createElement("div");
+      div.className = "dia";
+
+      var cabeca = document.createElement("div");
+      cabeca.className = "cabeca";
+      var sig = document.createElement("span");
+      sig.className = "sigla";
+      sig.textContent = d.sigla;
+      var sel = document.createElement("select");
+      sel.setAttribute("aria-label", "Campo de experiência de " + d.sigla);
+      Object.keys(D.campos).forEach(function (k) {
+        var o = document.createElement("option");
+        o.value = k;
+        o.textContent = D.campos[k];
+        if (k === d.campo) { o.selected = true; }
+        sel.appendChild(o);
+      });
+      sel.addEventListener("change", function () {
+        d.campo = sel.value;
+        sortearDia(d);
+        pintarDias();
+        gerarPlano();
+      });
+      cabeca.appendChild(sig);
+      cabeca.appendChild(sel);
+      div.appendChild(cabeca);
+
+      var f = folhaPorNumero(escolhidas[d.sigla]);
+      var cx = document.createElement("div");
+      cx.className = "folha";
+      if (f) {
+        cx.innerHTML = '<span class="cod"></span><br><b></b><span class="en"></span>';
+        cx.querySelector(".cod").textContent = "BNCC " + f.bncc + "  ·  FOLHA " + pad(f.n);
+        cx.querySelector("b").textContent = f.titulo;
+        cx.querySelector(".en").textContent = f.enunciado;
+      } else {
+        cx.textContent = "Sem folha para este campo.";
+      }
+      div.appendChild(cx);
+
+      var troca = document.createElement("button");
+      troca.className = "btn calma pequena";
+      troca.style.marginTop = "9px";
+      troca.textContent = "Trocar a folha de " + d.nome;
+      troca.addEventListener("click", function () {
+        sortearDia(d, Date.now());
+        pintarDias();
+        gerarPlano();
+      });
+      div.appendChild(troca);
+
+      caixa.appendChild(div);
+    });
+  }
+
+  function gerarPlano() {
+    var turma = turmaPorId($("pl-turma").value);
+    var t = [];
+    t.push("PLANO DA SEMANA");
+    t.push("Turma: " + (turma ? turma.nome : "") +
+           "   Semana de " + (dataBR($("pl-data").value) || "___/___/____"));
+    DIAS.forEach(function (d) {
+      var f = folhaPorNumero(escolhidas[d.sigla]);
+      t.push("");
+      t.push(d.sigla + "  ·  " + D.campos[d.campo]);
+      if (!f) { t.push("Sem folha para este campo."); return; }
+      var obj = D.objetivos.filter(function (o) { return o.cod === f.bncc; })[0];
+      t.push("Objetivo " + f.bncc + (obj ? ": " + obj.texto : ""));
+      t.push("Atividade: FOLHA " + pad(f.n) + ", " + f.titulo + ".");
+      t.push("Enunciado: " + f.enunciado);
+      if (f.dica) { t.push("Como conduzir: " + f.dica); }
+      t.push("Avaliação: registrar na ficha de acompanhamento se a criança já conquistou, está em processo ou precisa de apoio.");
+    });
+    t.push("");
+    t.push("Imprimir esta semana: folhas " +
+      DIAS.map(function (d) { return pad(escolhidas[d.sigla] || 0); }).join(", ") + ".");
+    $("saida-plano").textContent = t.join("\n");
+  }
+
+  // =================================================================
+  // comuns
+  // =================================================================
+  function turmaPorId(tid) {
+    return estado.turmas.filter(function (t) { return t.id === tid; })[0] || null;
+  }
+
+  function pintarSeletores() {
+    ["r-turma", "pl-turma"].forEach(function (alvo) {
+      var sel = $(alvo), antes = sel.value;
+      sel.innerHTML = "";
+      if (!estado.turmas.length) {
+        var o = document.createElement("option");
+        o.textContent = "Cadastre uma turma na aba Parecer";
+        o.value = "";
+        sel.appendChild(o);
+        return;
+      }
+      estado.turmas.forEach(function (t) {
+        var o = document.createElement("option");
+        o.value = t.id;
+        o.textContent = t.nome;
+        sel.appendChild(o);
+      });
+      if (antes) { sel.value = antes; }
+    });
+  }
+
+  function copiar(texto, botao) {
+    var antes = botao.textContent;
+    function feito() {
+      botao.textContent = "Copiado";
+      setTimeout(function () { botao.textContent = antes; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).then(feito, function () { manual(); });
+    } else { manual(); }
+    function manual() {
+      // iOS antigo e http sem TLS nao tem clipboard: seleciona para a
+      // professora copiar com o dedo
+      var ta = document.createElement("textarea");
+      ta.value = texto;
+      ta.style.cssText = "position:absolute;left:-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); feito(); }
+      catch (e) { botao.textContent = "Selecione e copie"; }
+      ta.remove();
+    }
+  }
+
+  $("copiar-parecer").addEventListener("click", function () { copiar($("saida-parecer").textContent, this); });
+  $("copiar-reuniao").addEventListener("click", function () { copiar($("saida-reuniao").textContent, this); });
+  $("copiar-plano").addEventListener("click", function () { copiar($("saida-plano").textContent, this); });
+  $("imprimir-parecer").addEventListener("click", function () { window.print(); });
+  $("imprimir-reuniao").addEventListener("click", function () { window.print(); });
+  $("imprimir-plano").addEventListener("click", function () { window.print(); });
+
+  ["r-turma", "r-data", "r-hora", "r-local", "r-prof"].forEach(function (k) {
+    $(k).addEventListener("input", gerarReuniao);
+    $(k).addEventListener("change", gerarReuniao);
+  });
+  ["pl-turma", "pl-data"].forEach(function (k) {
+    $(k).addEventListener("change", function () {
+      DIAS.forEach(function (d) { sortearDia(d); });
+      pintarDias(); gerarPlano();
+    });
+  });
+  $("sortear-semana").addEventListener("click", function () {
+    estado.semente = (estado.semente || 1) + 1;
+    escolhidas = {};
+    DIAS.forEach(function (d) { sortearDia(d, Date.now() + d.sigla); });
+    salvar(); pintarDias(); gerarPlano();
+  });
+
+  // ------------------------------------------------------------- arranque
+  $("periodo").value = estado.periodo || "";
+  pintarTurmas();
+  pintarSeletores();
+  pintarAssuntos();
+  DIAS.forEach(function (d) { sortearDia(d); });
+  pintarDias();
+  gerarReuniao();
+  gerarPlano();
+  telasParecer("turmas");
+})();
+</script>
+
+</body>
+</html>
