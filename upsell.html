@@ -195,6 +195,39 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 @media (min-width:720px){
   .par{grid-template-columns:1fr 1fr;align-items:start}
 }
+/* ---------- celular ----------
+   a oferta tem que chegar antes do polegar cansar */
+.aprovado{padding:10px 16px;line-height:1.35}
+.aprovado b{display:inline;font-size:1rem}
+.aprovado span{font-size:.9rem}
+.alerta{padding:9px 16px;font-size:.92rem;line-height:1.35}
+.pular{
+  display:inline-flex;align-items:center;gap:8px;margin-top:18px;
+  min-height:44px;padding:9px 18px;border-radius:999px;background:var(--branco);
+  border:2px solid var(--azul-borda);color:var(--azul);font-weight:800;
+  font-size:.95rem;text-decoration:none;
+}
+.pular svg{width:12px;height:12px;fill:var(--laranja);transform:rotate(90deg)}
+#oferta{scroll-margin-top:14px}
+@media (max-width:480px){
+  body{font-size:16px}
+  .env{padding-inline:16px}
+  .heroi .lead{font-size:1rem;margin-top:12px}
+  .par{margin-top:18px}
+  .lado{padding:13px 14px}
+  .vem{gap:8px;margin-top:16px}
+  .vem li{padding:12px 13px;gap:10px}
+  .vem span{font-size:.9rem;line-height:1.5}
+  .preco-caixa{margin-top:20px}
+  .garantia{padding:12px 14px}
+}
+/* a barra de cookies nao pode cobrir o botao da Hotmart, que vem embaixo */
+#aviso-lgpd{
+  flex-wrap:nowrap!important;text-align:left!important;gap:10px!important;
+  padding:9px 14px!important;font-size:12px!important;line-height:1.35!important;
+  padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))!important;
+}
+#aviso-lgpd button{flex:none;padding:8px 14px!important;font-size:12px!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -206,10 +239,10 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 </svg>
 
 <div class="aprovado">
-  <b>Pagamento aprovado</b>
-  <span>O Pack Educação Infantil Completa já está no seu e-mail.</span>
+  <b>Pagamento aprovado.</b>
+  <span>O pack já está no seu <span style="white-space:nowrap">e-mail</span>.</span>
 </div>
-<div class="alerta">Espere: sua compra ainda não terminou. Esta oferta só aparece agora.</div>
+<div class="alerta">Espere: sua compra ainda não terminou.</div>
 
 <!-- ================= HERÓI ================= -->
 <section class="heroi faixa">
@@ -220,6 +253,7 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
       você precisa escrever <mark>um parecer descritivo para cada criança da
       turma</mark>, um por um, todos diferentes, com objetivo da BNCC dentro.
     </p>
+      <a class="pular" href="#oferta"><svg><use href="#i-seta"></use></svg>Ver a oferta de R$ 47</a>
   </div>
 </section>
 
@@ -282,7 +316,7 @@ Arrisca escrever do seu jeito e pergunta como se escreve.</p>
       <li>
         <svg><use href="#i-check"></use></svg>
         <div>
-          <b>Kit Avaliação e Parecer Descritivo, 34 páginas</b>
+          <b>Kit Avaliação e Parecer Descritivo, 33 páginas</b>
           <span>288 frases prontas pelos 32 objetivos da BNCC, três pareceres
           modelo e 10 fichas de registro. É a versão em papel do que o app faz
           no toque.</span>
@@ -299,14 +333,14 @@ Arrisca escrever do seu jeito e pergunta como se escreve.</p>
       <li>
         <svg><use href="#i-check"></use></svg>
         <div>
-          <b>Kit Jogos Para Imprimir, 36 páginas</b>
+          <b>Kit Jogos Para Imprimir, 37 páginas</b>
           <span>Dominó, bingo, quebra-cabeça, memória e cartas de letra
           inicial. Para o dia que sai do previsto.</span>
         </div>
       </li>
     </ul>
 
-    <div class="preco-caixa">
+    <div class="preco-caixa" id="oferta">
       <p class="de">Separados custariam <s>R$ 103</s></p>
       <p class="preco"><sup>R$</sup>47</p>
       <p class="cond">Pagamento único &middot; acesso vitalício</p>

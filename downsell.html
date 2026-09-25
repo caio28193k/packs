@@ -193,6 +193,39 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 @media (min-width:720px){
   .par{grid-template-columns:1fr 1fr;align-items:start}
 }
+/* ---------- celular ----------
+   a oferta tem que chegar antes do polegar cansar */
+.aprovado{padding:10px 16px;line-height:1.35}
+.aprovado b{display:inline;font-size:1rem}
+.aprovado span{font-size:.9rem}
+.alerta{padding:9px 16px;font-size:.92rem;line-height:1.35}
+.pular{
+  display:inline-flex;align-items:center;gap:8px;margin-top:18px;
+  min-height:44px;padding:9px 18px;border-radius:999px;background:var(--branco);
+  border:2px solid var(--azul-borda);color:var(--azul);font-weight:800;
+  font-size:.95rem;text-decoration:none;
+}
+.pular svg{width:12px;height:12px;fill:var(--laranja);transform:rotate(90deg)}
+#oferta{scroll-margin-top:14px}
+@media (max-width:480px){
+  body{font-size:16px}
+  .env{padding-inline:16px}
+  .heroi .lead{font-size:1rem;margin-top:12px}
+  .par{margin-top:18px}
+  .lado{padding:13px 14px}
+  .vem{gap:8px;margin-top:16px}
+  .vem li{padding:12px 13px;gap:10px}
+  .vem span{font-size:.9rem;line-height:1.5}
+  .preco-caixa{margin-top:20px}
+  .garantia{padding:12px 14px}
+}
+/* a barra de cookies nao pode cobrir o botao da Hotmart, que vem embaixo */
+#aviso-lgpd{
+  flex-wrap:nowrap!important;text-align:left!important;gap:10px!important;
+  padding:9px 14px!important;font-size:12px!important;line-height:1.35!important;
+  padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))!important;
+}
+#aviso-lgpd button{flex:none;padding:8px 14px!important;font-size:12px!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -205,8 +238,8 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 
 
 <div class="aprovado">
-  <b>Sem problema</b>
-  <span>Seu Pack Educação Infantil Completa já está garantido.</span>
+  <b>Sem problema.</b>
+  <span>Seu pack já está garantido.</span>
 </div>
 <div class="alerta">Antes de sair, uma última coisa, e é bem mais barata.</div>
 
@@ -219,6 +252,7 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
       o <mark>Kit Avaliação e Parecer Descritivo</mark>. Sem o planner, sem os
       jogos, sem o app. Só ele, por menos da metade.
     </p>
+      <a class="pular" href="#oferta"><svg><use href="#i-seta"></use></svg>Ver a oferta de R$ 19</a>
   </div>
 </section>
 
@@ -265,7 +299,7 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
       </li>
     </ul>
 
-    <div class="preco-caixa">
+    <div class="preco-caixa" id="oferta">
       <p class="de">No Combo, junto com o planner e os jogos, sai por <s>R$ 47</s></p>
       <p class="preco"><sup>R$</sup>19</p>
       <p class="cond">Pagamento único &middot; acesso vitalício</p>
