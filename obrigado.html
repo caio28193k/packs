@@ -183,6 +183,21 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 @media (min-width:720px){
   .par{grid-template-columns:1fr 1fr;align-items:start}
 }
+/* celular: topo em uma linha e barra de cookies compacta */
+.aprovado{padding:10px 16px;line-height:1.35}
+.aprovado b{display:inline;font-size:1rem}
+.aprovado span{font-size:.9rem}
+@media (max-width:480px){
+  body{font-size:16px}
+  .env{padding-inline:16px}
+  .heroi .lead{font-size:1rem}
+}
+#aviso-lgpd{
+  flex-wrap:nowrap!important;text-align:left!important;gap:10px!important;
+  padding:9px 14px!important;font-size:12px!important;line-height:1.35!important;
+  padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))!important;
+}
+#aviso-lgpd button{flex:none;padding:8px 14px!important;font-size:12px!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -195,8 +210,8 @@ h2.secao{font-size:clamp(1.3rem,5vw,2rem);color:var(--azul);text-align:center}
 
 
 <div class="aprovado">
-  <b>Compra aprovada</b>
-  <span>Seu material já está a caminho do seu e-mail.</span>
+  <b>Compra aprovada.</b>
+  <span>O material está a caminho do seu <span style="white-space:nowrap">e-mail</span>.</span>
 </div>
 
 <!-- ================= HERÓI ================= -->
