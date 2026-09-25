@@ -802,5 +802,50 @@ mark{
 })();
 </script>
 
+<script>
+(function () {
+  "use strict";
+
+  // so estes viajam. qualquer outro parametro da URL fica de fora, para nao
+  // mandar para a Hotmart coisa que nao e rastreamento
+  var PERMITIDOS = ["utm_source", "utm_medium", "utm_campaign", "utm_content",
+                    "utm_term", "src", "sck", "fbclid"];
+  var CHAVE = "origem-anuncio";
+
+  function daUrl() {
+    var busca = window.location.search;
+    if (!busca || busca.length < 2) { return null; }
+    var entrada = new URLSearchParams(busca);
+    var saida = new URLSearchParams();
+    PERMITIDOS.forEach(function (nome) {
+      var v = entrada.get(nome);
+      if (v) { saida.set(nome, v); }
+    });
+    var texto = saida.toString();
+    return texto || null;
+  }
+
+  function guardada() {
+    try { return sessionStorage.getItem(CHAVE) || null; }
+    catch (e) { return null; }   // modo privado
+  }
+
+  var origem = daUrl();
+  if (origem) {
+    try { sessionStorage.setItem(CHAVE, origem); } catch (e) {}
+  } else {
+    origem = guardada();
+  }
+  if (!origem) { return; }
+
+  var links = document.querySelectorAll('a[href*="pay.hotmart.com"]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = a.getAttribute("href");
+    if (href.indexOf("utm_source=") >= 0) { return; }   // ja tem
+    a.setAttribute("href", href + (href.indexOf("?") >= 0 ? "&" : "?") + origem);
+  });
+})();
+</script>
+
 </body>
 </html>
