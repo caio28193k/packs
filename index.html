@@ -480,7 +480,32 @@ mark{
   .bonus{grid-template-columns:1fr 1fr}
 }
 
+/* ---------- depoimentos ----------
+   uma faixa so, andando de lado sem parar: mostra os oito depoimentos numa
+   altura de um cartao. A lista vem duas vezes para o loop nao ter emenda;
+   a segunda copia fica escondida dos leitores de tela. Para quando a pessoa
+   passa o mouse ou encosta o dedo, para dar tempo de ler */
+.depo{padding:34px 0 30px;background:var(--azul-fundo);overflow:hidden}
+.depo .olho{text-align:center}
+.depo-faixa{margin-top:16px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.depo-trilho{display:flex;gap:14px;width:max-content;
+  animation:depo-anda 70s linear infinite}
+.depo-faixa:hover .depo-trilho,.depo-faixa:active .depo-trilho{animation-play-state:paused}
+.depo-cartao{flex:0 0 280px;margin:0;background:#fff;border:2px solid var(--borda);
+  border-radius:16px;padding:14px 16px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.depo-cartao p{margin:0;font-size:.9rem;line-height:1.45;color:var(--texto)}
+.depo-cartao figcaption{font-weight:800;font-size:.84rem;color:var(--azul)}
+@keyframes depo-anda{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 7px))}}
+@media (max-width:600px){
+  .depo-cartao{flex-basis:250px}
+  .depo-trilho{animation-duration:60s}
+}
+
 @media (prefers-reduced-motion:reduce){
+  .depo-faixa{overflow-x:auto}
   *{animation:none!important;transition:none!important}
 }
 </style>
@@ -696,6 +721,33 @@ mark{
         <span><b>Medalhas e Elogios</b><span>Para dar quando a criança conseguir.</span></span>
       </li>
     </ul>
+  </div>
+</section>
+
+<!-- ================= DEPOIMENTOS =================
+     compradoras reais, com autorizacao para o nome. Nao acrescentar estrela,
+     cidade ou cargo que elas nao deram -->
+<section class="depo" aria-label="Depoimentos de quem comprou">
+  <p class="olho">Quem já está usando</p>
+  <div class="depo-faixa">
+    <div class="depo-trilho">
+        <figure class="depo-cartao"><p>“Comecei pelas atividades das letras. Gostei de conseguir olhar as folhas e escolher quais faziam sentido pra minha turma.”</p><figcaption>Mariana Lopes</figcaption></figure>
+        <figure class="depo-cartao"><p>“Imprimi algumas pra experimentar e a impressão ficou boa em preto e branco. Pra mim isso conta bastante.”</p><figcaption>Camila Duarte</figcaption></figure>
+        <figure class="depo-cartao"><p>“Ainda não usei tudo, tem bastante coisa. Por enquanto, as atividades com o nome foram as que mais aproveitei.”</p><figcaption>Juliana Mendes</figcaption></figure>
+        <figure class="depo-cartao"><p>“Peguei mais pelas letras, mas acabei usando as de números primeiro. Foi bom ter outras opções no mesmo material.”</p><figcaption>Renata Alves</figcaption></figure>
+        <figure class="depo-cartao"><p>“Gostei das orientações pequenas em cada folha. Às vezes uma sugestão simples já ajuda a pensar em como apresentar a atividade.”</p><figcaption>Patrícia Rocha</figcaption></figure>
+        <figure class="depo-cartao"><p>“Usei com o Pré II e adaptei algumas propostas. Nem toda folha serve pro mesmo momento da turma, mas consegui aproveitar bastante.”</p><figcaption>Aline Ferreira</figcaption></figure>
+        <figure class="depo-cartao"><p>“Eu costumava juntar atividades de vários arquivos. Ter esse material organizado facilitou na hora de separar o que ia imprimir.”</p><figcaption>Débora Martins</figcaption></figure>
+        <figure class="depo-cartao"><p>“Pelo valor, achei que valeu a compra. Comecei com poucas folhas e deixei outras separadas pra usar nas próximas semanas.”</p><figcaption>Fernanda Costa</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Comecei pelas atividades das letras. Gostei de conseguir olhar as folhas e escolher quais faziam sentido pra minha turma.”</p><figcaption>Mariana Lopes</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Imprimi algumas pra experimentar e a impressão ficou boa em preto e branco. Pra mim isso conta bastante.”</p><figcaption>Camila Duarte</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Ainda não usei tudo, tem bastante coisa. Por enquanto, as atividades com o nome foram as que mais aproveitei.”</p><figcaption>Juliana Mendes</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Peguei mais pelas letras, mas acabei usando as de números primeiro. Foi bom ter outras opções no mesmo material.”</p><figcaption>Renata Alves</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Gostei das orientações pequenas em cada folha. Às vezes uma sugestão simples já ajuda a pensar em como apresentar a atividade.”</p><figcaption>Patrícia Rocha</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Usei com o Pré II e adaptei algumas propostas. Nem toda folha serve pro mesmo momento da turma, mas consegui aproveitar bastante.”</p><figcaption>Aline Ferreira</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Eu costumava juntar atividades de vários arquivos. Ter esse material organizado facilitou na hora de separar o que ia imprimir.”</p><figcaption>Débora Martins</figcaption></figure>
+        <figure class="depo-cartao" aria-hidden="true"><p>“Pelo valor, achei que valeu a compra. Comecei com poucas folhas e deixei outras separadas pra usar nas próximas semanas.”</p><figcaption>Fernanda Costa</figcaption></figure>
+    </div>
   </div>
 </section>
 
