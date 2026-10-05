@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/bate-palma", "destination": "/bate-palmas/", "permanent": false },
+    { "source": "/bate-palma/", "destination": "/bate-palmas/", "permanent": false }
+  ]
+}
