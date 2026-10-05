@@ -87,6 +87,7 @@ src="https://www.facebook.com/tr?id=1040972462045050&ev=PageView&noscript=1"></n
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+html,body{overflow-x:clip;max-width:100%}
 body{margin:0;background:var(--creme);color:var(--texto);
   font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.6;
   -webkit-font-smoothing:antialiased}
@@ -153,7 +154,7 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
 .contador b{display:block;font-size:.92rem}
 .contador span{display:block;font-size:.78rem;color:var(--suave);line-height:1.35;margin-top:4px}
 .mockup{margin-top:24px;background:linear-gradient(180deg,#FBEFFF,#FFF4F6);border-radius:22px;padding:clamp(14px,3vw,30px)}
-.mockup img{max-width:440px;margin-inline:auto;border-radius:16px}
+.mockup img{width:100%;max-width:440px;margin-inline:auto;border-radius:16px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .tags span{font-size:.78rem;font-weight:700;color:var(--roxo);background:#F3E8FF;padding:5px 12px;border-radius:999px}
 
@@ -273,15 +274,53 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
   html.com-barra body{padding-bottom:84px}
 }
 @media (max-width:600px){
+  body{font-size:16px}
   .env{padding-inline:16px}
-  .faixa{padding-block:40px}
-  .btn{width:100%;padding:17px 18px}
+  .faixa{padding-block:38px}
+  h2.secao{font-size:1.55rem}
+  .sub-secao{font-size:.98rem}
+  .btn{width:100%;padding:17px 18px;font-size:1.05rem}
   .barra-fixa .btn{width:auto}
-  .contadores{grid-template-columns:repeat(2,1fr)}
-  .contadores .contador:last-child{grid-column:1 / -1}
-  .modos,.bonus,.passos{grid-template-columns:1fr}
+
+  /* heroi: titulo e chamada cabem na primeira tela */
+  .heroi{padding-top:30px}
+  .heroi h1{font-size:1.85rem;margin-top:14px}
+  .heroi .lead{font-size:.96rem;margin-top:14px;text-align:left}
+  .publico{gap:6px;margin-top:14px}
+  .publico span{font-size:.7rem;padding:4px 10px}
+  .carrossel{margin-top:22px;max-width:320px}
+  .seta-car{width:34px;height:34px;font-size:1rem}
   .seta-car.esq{left:6px}.seta-car.dir{right:6px}
-  .garantia{flex-direction:column;text-align:center}
+  .heroi .acao{margin-top:22px}
+
+  .caixa{padding:18px;border-radius:22px;margin-top:22px}
+  .caixa h3{font-size:1.18rem}
+  .caixa>p{font-size:.95rem}
+  .contadores{grid-template-columns:repeat(2,1fr);gap:10px}
+  .contadores .contador:last-child{grid-column:1 / -1}
+  .contador{padding:12px 8px}
+  .contador .n{width:44px;height:44px;font-size:1.05rem;margin-bottom:8px}
+  .mockup{padding:10px;border-radius:18px}
+
+  .modos,.bonus,.passos{grid-template-columns:1fr;gap:12px}
+  .modo,.bonus article{padding:18px}
+  .passo{padding:13px 14px}
+  .previa{gap:16px}
+  .previa .carta{padding:8px;border-radius:18px}
+
+  .bncc .lado{padding:24px 20px}
+  .bncc .lado h3{font-size:1.35rem}
+  .bncc ul{padding:16px}
+
+  .para-quem{padding:24px 18px;border-radius:22px}
+  .caixa-preco{border-radius:22px}
+  .caixa-preco .corpo{padding:20px 18px}
+  .inclui li{font-size:.92rem}
+  .garantia{flex-direction:column;text-align:center;padding:20px}
+  .faq summary{font-size:.94rem;padding:15px 44px 15px 16px}
+  .faq .resp{padding:0 16px 16px}
+  .final h2{font-size:1.6rem}
+  .rodape{padding-bottom:100px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
