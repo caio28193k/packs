@@ -167,17 +167,15 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
 .modo ul{margin:12px 0 0;padding-left:18px;color:var(--suave);font-size:.92rem}
 .modo li+li{margin-top:5px}
 
-/* ---------- passo a passo ---------- */
-.passos{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px;text-align:left}
-.passo{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--borda);
-  border-radius:16px;padding:16px 18px}
-.passo i{flex:none;width:30px;height:30px;border-radius:999px;background:var(--verde-claro);color:var(--verde);
-  font-style:normal;font-weight:800;display:grid;place-items:center;font-size:.9rem}
 
-/* ---------- prévia ---------- */
-.previa{display:grid;gap:22px;margin-top:30px;max-width:560px;margin-inline:auto}
-.previa .carta{background:#fff;border-radius:24px;padding:12px;box-shadow:0 26px 50px -34px rgba(58,15,99,.7)}
-.previa figcaption{margin-top:10px;font-weight:700;color:var(--suave);font-size:.9rem}
+/* ---------- prévia: carrossel, como no concorrente ---------- */
+.previa-car{max-width:620px;margin-top:26px}
+.previa-car .trilho{background:#fff;box-shadow:0 26px 50px -34px rgba(58,15,99,.7)}
+.previa-car figure{flex:0 0 100%;scroll-snap-align:start;margin:0;padding:12px 12px 14px}
+.previa-car figure img{width:100%;border-radius:12px}
+.previa-car figcaption{margin-top:10px;font-weight:700;color:var(--suave);font-size:.88rem}
+.previa-car .pontos i{background:#E2D3EE}.previa-car .pontos i.ativo{background:var(--rosa)}
+.previa-car .seta-car{top:42%}
 
 /* ---------- BNCC ---------- */
 .bncc{display:grid;grid-template-columns:.8fr 1.2fr;background:#fff;border-radius:28px;overflow:hidden;
@@ -207,9 +205,6 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
 .bonus li{display:flex;gap:8px;align-items:flex-start}
 .bonus li svg{width:16px;height:16px;fill:var(--verde);flex:none;margin-top:4px}
 
-/* ---------- para quem ---------- */
-.para-quem{max-width:760px;margin:0 auto;background:#fff;border-radius:28px;padding:clamp(26px,4vw,40px);
-  box-shadow:0 30px 60px -40px rgba(240,40,122,.55)}
 
 /* ---------- preço ---------- */
 .oferta{background:var(--rosado)}
@@ -306,17 +301,16 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
   .contador .n{width:44px;height:44px;font-size:1.05rem;margin-bottom:8px}
   .mockup{padding:10px;border-radius:18px}
 
-  .modos,.bonus,.passos{grid-template-columns:1fr;gap:12px}
+  .modos,.bonus{grid-template-columns:1fr;gap:12px}
   .modo,.bonus article{padding:18px}
-  .passo{padding:13px 14px}
-  .previa{gap:16px}
-  .previa .carta{padding:8px;border-radius:18px}
+  .previa-car{max-width:100%;margin-top:20px}
+  .previa-car figure{padding:8px 8px 12px}
+  .previa-car .seta-car.esq{left:4px}.previa-car .seta-car.dir{right:4px}
 
   .bncc .lado{padding:24px 20px}
   .bncc .lado h3{font-size:1.35rem}
   .bncc ul{padding:16px}
 
-  .para-quem{padding:24px 18px;border-radius:22px}
   .caixa-preco{border-radius:22px}
   .caixa-preco .corpo{padding:20px 18px}
   .inclui li{font-size:.92rem}
@@ -436,37 +430,21 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
   </div>
 </section>
 
-<!-- ================= PASSO A PASSO ================= -->
-<section class="faixa">
-  <div class="env centro">
-    <span class="selo verde">&#127891; Dicas para professores</span>
-    <h2 class="secao">Passo a passo simples para aplicar o <span class="grad">Bate-Palmas</span> na sala de aula</h2>
-    <div class="passos">
-      <div class="passo"><i>1</i><p>Imprima, recorte cada tira e dobre na linha do meio.</p></div>
-      <div class="passo"><i>2</i><p>Separe um pregador de roupa para cada criança.</p></div>
-      <div class="passo"><i>3</i><p>Comece pelas palavras de 1 e 2 palmas.</p></div>
-      <div class="passo"><i>4</i><p>Fale a palavra junto com a criança, sem pressa.</p></div>
-      <div class="passo"><i>5</i><p>Bata as palmas com ela nas primeiras cartas, depois deixe que bata sozinha.</p></div>
-      <div class="passo"><i>6</i><p>Deixe que ela vire a carta e descubra se acertou.</p></div>
-      <div class="passo"><i>7</i><p>Quando ela dominar as 32, entregue o certificado.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= PRÉVIA ================= -->
 <section class="faixa" style="background:var(--rosado)">
   <div class="env centro">
     <span class="selo">&#10024; Prévia do material</span>
     <h2 class="secao">Veja como é o <span class="grad">material</span></h2>
-    <div class="previa">
-      <figure style="margin:0"><div class="carta"><img src="/bate-palmas/img/carta-borboleta.webp" width="1100" height="662" loading="lazy" alt="Carta da BORBOLETA, frente e verso"></div>
-        <figcaption>BORBOLETA: 4 palmas. Frente à esquerda, verso à direita.</figcaption></figure>
-      <figure style="margin:0"><div class="carta"><img src="/bate-palmas/img/par-boneca.webp" width="900" height="542" loading="lazy" alt="Carta da BONECA, frente e verso"></div>
-        <figcaption>BONECA: 3 palmas.</figcaption></figure>
-      <figure style="margin:0"><div class="carta"><img src="/bate-palmas/img/par-bola.webp" width="900" height="542" loading="lazy" alt="Carta da BOLA, frente e verso"></div>
-        <figcaption>BOLA: 2 palmas.</figcaption></figure>
-      <figure style="margin:0"><div class="carta"><img src="/bate-palmas/img/pagina-pb.webp" width="1200" height="848" loading="lazy" alt="Página das cartas em preto e branco"></div>
-        <figcaption>A versão em preto e branco, para imprimir na escola e a criança pintar.</figcaption></figure>
+    <div class="carrossel previa-car">
+      <div class="trilho" id="trilho-previa">
+        <figure><img src="/bate-palmas/img/carta-borboleta.webp" width="1100" height="662" loading="lazy" alt="Carta da BORBOLETA, frente e verso"><figcaption>BORBOLETA: 4 palmas. Frente à esquerda, verso à direita.</figcaption></figure>
+        <figure><img src="/bate-palmas/img/par-boneca.webp" width="900" height="542" loading="lazy" alt="Carta da BONECA, frente e verso"><figcaption>BONECA: 3 palmas.</figcaption></figure>
+        <figure><img src="/bate-palmas/img/par-bola.webp" width="900" height="542" loading="lazy" alt="Carta da BOLA, frente e verso"><figcaption>BOLA: 2 palmas.</figcaption></figure>
+        <figure><img src="/bate-palmas/img/pagina-pb.webp" width="1200" height="848" loading="lazy" alt="Página das cartas em preto e branco"><figcaption>Versão preto e branco, para imprimir na escola e pintar.</figcaption></figure>
+      </div>
+      <button class="seta-car esq" type="button" aria-label="Anterior" data-alvo="trilho-previa" data-dir="-1">&#8249;</button>
+      <button class="seta-car dir" type="button" aria-label="Próxima" data-alvo="trilho-previa" data-dir="1">&#8250;</button>
+      <div class="pontos" data-de="trilho-previa" aria-hidden="true"><i class="ativo"></i><i></i><i></i><i></i></div>
     </div>
   </div>
 </section>
@@ -514,20 +492,6 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
       <article><div class="topo-b"><div class="presente"><svg><use href="#i-presente"></use></svg></div><span class="pdf">PDF BÔNUS</span></div>
         <h3>Bônus 6: Lista de 80 palavras</h3><p>Palavras de 1 a 4 sílabas, já separadas, para jogar sem cartas.</p>
         <ul><li><svg><use href="#i-check"></use></svg>Para a fila e o pátio</li><li><svg><use href="#i-check"></use></svg>Amplia o vocabulário</li><li><svg><use href="#i-check"></use></svg>Uma folha só</li></ul></article>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PARA QUEM ================= -->
-<section class="faixa">
-  <div class="env centro">
-    <div class="para-quem">
-      <span class="selo">&#127891; Para quem é</span>
-      <h2 class="secao">Feito para professores da <span class="grad">Educação Infantil, AEE e reforço</span></h2>
-      <p class="sub-secao">
-        Um material pensado para quem trabalha todos os dias com crianças
-        aprendendo a ler: na sala de aula, no atendimento individual ou em casa.
-      </p>
     </div>
   </div>
 </section>
@@ -619,19 +583,20 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
 
 <script>
 (function () {
-  // carrossel do herói: setas e bolinhas
-  var trilho = document.getElementById('trilho');
-  if (!trilho) { return; }
-  var pontos = document.querySelectorAll('.pontos i');
-  Array.prototype.forEach.call(document.querySelectorAll('.seta-car'), function (b) {
-    b.addEventListener('click', function () {
-      trilho.scrollBy({ left: trilho.clientWidth * Number(b.getAttribute('data-dir')), behavior: 'smooth' });
+  // carrosseis: setas e bolinhas
+  Array.prototype.forEach.call(document.querySelectorAll('.trilho'), function (trilho) {
+    var caixa = trilho.parentNode;
+    var pontos = caixa.querySelectorAll('.pontos i');
+    Array.prototype.forEach.call(caixa.querySelectorAll('.seta-car'), function (b) {
+      b.addEventListener('click', function () {
+        trilho.scrollBy({ left: trilho.clientWidth * Number(b.getAttribute('data-dir')), behavior: 'smooth' });
+      });
     });
+    trilho.addEventListener('scroll', function () {
+      var i = Math.round(trilho.scrollLeft / trilho.clientWidth);
+      Array.prototype.forEach.call(pontos, function (p, k) { p.classList.toggle('ativo', k === i); });
+    }, { passive: true });
   });
-  trilho.addEventListener('scroll', function () {
-    var i = Math.round(trilho.scrollLeft / trilho.clientWidth);
-    Array.prototype.forEach.call(pontos, function (p, k) { p.classList.toggle('ativo', k === i); });
-  }, { passive: true });
 })();
 </script>
 
