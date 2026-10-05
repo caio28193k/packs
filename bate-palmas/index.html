@@ -286,12 +286,16 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
   .heroi{padding-top:30px}
   .heroi h1{font-size:1.85rem;margin-top:14px}
   .heroi .lead{font-size:.96rem;margin-top:14px;text-align:left}
-  .publico{gap:6px;margin-top:14px}
-  .publico span{font-size:.7rem;padding:4px 10px}
-  .carrossel{margin-top:22px;max-width:320px}
-  .seta-car{width:34px;height:34px;font-size:1rem}
-  .seta-car.esq{left:6px}.seta-car.dir{right:6px}
-  .heroi .acao{margin-top:22px}
+  .so-desk{display:none}
+  /* publico numa linha so, deslizando: economiza duas linhas da primeira tela */
+  .publico{gap:6px;margin:14px -16px 0;padding-inline:16px;flex-wrap:nowrap;overflow-x:auto;
+    justify-content:flex-start;scrollbar-width:none}
+  .publico::-webkit-scrollbar{display:none}
+  .publico span{font-size:.76rem;padding:5px 11px;flex:none}
+  .carrossel{margin-top:18px;max-width:250px}
+  .seta-car{width:40px;height:40px;font-size:1.1rem}
+  .seta-car.esq{left:-20px}.seta-car.dir{right:-20px}
+  .heroi .acao{margin-top:18px}
 
   .caixa{padding:18px;border-radius:22px;margin-top:22px}
   .caixa h3{font-size:1.18rem}
@@ -342,8 +346,8 @@ h2.secao{font-size:clamp(1.6rem,5vw,2.4rem);color:var(--texto);margin-top:14px}
       O <b>Bate-Palmas</b> é um material pedagógico criado para desenvolver a
       consciência silábica de um jeito ativo: a criança fala a palavra, bate uma
       palma por sílaba, prende o pregador no número e vira a carta para conferir.
-      Brincando, ela aprende que as palavras se dividem em pedaços, o primeiro
-      passo para ler.
+      <span class="so-desk">Brincando, ela aprende que as palavras se dividem em
+      pedaços, o primeiro passo para ler.</span>
     </p>
     <div class="publico" aria-label="Para quem é">
       <span>Educação Infantil</span><span>AEE</span><span>TEA</span><span>Famílias</span>
